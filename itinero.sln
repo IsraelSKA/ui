@@ -1,11 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
+# Visual Studio 2012
 VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{F1BE3410-F43A-41F9-A369-D0D5F6F6B6B5}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "itinero.Android", "src\itinero.Android\itinero.Android.csproj", "{2A4034B5-D9FE-4D89-BF4B-7AA0F1E58646}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{BC036AD8-FFA3-42EA-B84D-E7CD5FCED54D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "itinero.Samples.Demo", "samples\itinero.Samples.Demo\itinero.Samples.Demo.csproj", "{DA9F8AC0-3AFC-4116-B9F3-D8D7FD3BD062}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "itinero.Samples.Data", "samples\itinero.Samples.Data\itinero.Samples.Data.csproj", "{69328941-3605-42C1-924C-533F87F774B9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,11 +23,23 @@ Global
 		{2A4034B5-D9FE-4D89-BF4B-7AA0F1E58646}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2A4034B5-D9FE-4D89-BF4B-7AA0F1E58646}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2A4034B5-D9FE-4D89-BF4B-7AA0F1E58646}.Release|Any CPU.Build.0 = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
+		{69328941-3605-42C1-924C-533F87F774B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69328941-3605-42C1-924C-533F87F774B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69328941-3605-42C1-924C-533F87F774B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69328941-3605-42C1-924C-533F87F774B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA9F8AC0-3AFC-4116-B9F3-D8D7FD3BD062}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA9F8AC0-3AFC-4116-B9F3-D8D7FD3BD062}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA9F8AC0-3AFC-4116-B9F3-D8D7FD3BD062}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{DA9F8AC0-3AFC-4116-B9F3-D8D7FD3BD062}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA9F8AC0-3AFC-4116-B9F3-D8D7FD3BD062}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA9F8AC0-3AFC-4116-B9F3-D8D7FD3BD062}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{2A4034B5-D9FE-4D89-BF4B-7AA0F1E58646} = {F1BE3410-F43A-41F9-A369-D0D5F6F6B6B5}
+		{DA9F8AC0-3AFC-4116-B9F3-D8D7FD3BD062} = {BC036AD8-FFA3-42EA-B84D-E7CD5FCED54D}
+		{69328941-3605-42C1-924C-533F87F774B9} = {BC036AD8-FFA3-42EA-B84D-E7CD5FCED54D}
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 EndGlobal

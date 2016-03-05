@@ -3,8 +3,6 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{2A4034B5-D9FE-4D89-BF4B-7AA0F1E58646}</ProjectGuid>
     <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
@@ -35,38 +33,31 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="BruTile, Version=0.16.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\BruTile.0.16.0\lib\portable-net403+sl50+win+wpa81+wp80+Xamarin.iOS10+MonoAndroid10+MonoTouch10\BruTile.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Mapsui, Version=0.7.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Mapsui.0.7.1\lib\MonoAndroid\Mapsui.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Mapsui.Geometries, Version=0.7.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Mapsui.0.7.1\lib\MonoAndroid\Mapsui.Geometries.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Mapsui.Rendering.Android, Version=0.7.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Mapsui.0.7.1\lib\MonoAndroid\Mapsui.Rendering.Android.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Mapsui.Rendering.OpenTK, Version=0.7.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Mapsui.0.7.1\lib\MonoAndroid\Mapsui.Rendering.OpenTK.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="Mono.Android" />
     <Reference Include="mscorlib" />
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\Newtonsoft.Json.6.0.1\lib\portable-net45+wp80+win8\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="OpenTK-1.0" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Xml" />
+    <Reference Include="BruTile, Version=0.16.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\packages\BruTile.0.16.0\lib\portable-net403+sl50+win+wpa81+wp80+Xamarin.iOS10+MonoAndroid10+MonoTouch10\BruTile.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed">
+      <HintPath>..\..\packages\Newtonsoft.Json.6.0.1\lib\portable-net45+wp80+win8\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Mapsui">
+      <HintPath>..\..\packages\Mapsui.0.7.1\lib\MonoAndroid\Mapsui.dll</HintPath>
+    </Reference>
+    <Reference Include="Mapsui.Geometries">
+      <HintPath>..\..\packages\Mapsui.0.7.1\lib\MonoAndroid\Mapsui.Geometries.dll</HintPath>
+    </Reference>
+    <Reference Include="Mapsui.Rendering.Android">
+      <HintPath>..\..\packages\Mapsui.0.7.1\lib\MonoAndroid\Mapsui.Rendering.Android.dll</HintPath>
+    </Reference>
+    <Reference Include="Mapsui.Rendering.OpenTK">
+      <HintPath>..\..\packages\Mapsui.0.7.1\lib\MonoAndroid\Mapsui.Rendering.OpenTK.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MapControl.cs" />

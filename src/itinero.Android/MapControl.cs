@@ -19,18 +19,19 @@ namespace itinero.Android
 {
     public class MapControl : AndroidGameView
     {
-        private const int None = 0;
-        private const int Drag = 1;
-        private const int Zoom = 2;
-        private int _mode = None;
-        private PointF _previousMap, _currentMap;
-        private PointF _previousMid = new PointF();
-        private readonly PointF _currentMid = new PointF();
-        private float _oldDist = 1f;
-        private bool _viewportInitialized;
-        private MapRenderer _renderer;
-        private Map _map;
-        private bool _refreshGraphics;
+        const int None = 0;
+        const int Drag = 1;
+        const int Zoom = 2;
+        int _mode = None;
+        PointF _previousMap, _currentMap;
+        PointF _previousMid = new PointF();
+        readonly PointF _currentMid = new PointF();
+        float _oldDist = 1f;
+        bool _viewportInitialized;
+        MapRenderer _renderer;
+        Map _map;
+        bool _refreshGraphics;
+
         public event  EventHandler<EventArgs> ViewportInitialized;
         
         public MapControl(Context context, IAttributeSet attrs) : base(context, attrs)
@@ -139,7 +140,7 @@ namespace itinero.Android
             }
         }
 
-        private static float Spacing(MotionEvent me)
+        static float Spacing(MotionEvent me)
         {
             if (me.PointerCount < 2) throw new ArgumentException();
 
@@ -148,7 +149,7 @@ namespace itinero.Android
             return (float)Math.Sqrt(x * x + y * y);
         }
 
-        private static void MidPoint(PointF point, MotionEvent me)
+        static void MidPoint(PointF point, MotionEvent me)
         {
             var x = me.GetX(0) + me.GetX(1);
             var y = me.GetY(0) + me.GetY(1);
@@ -208,13 +209,13 @@ namespace itinero.Android
             ((Activity)Context).RunOnUiThread(new Runnable(RefreshGraphics));
         }
 
-        private void RefreshGraphics()
+        void RefreshGraphics()
         {
             _refreshGraphics = true;
             Invalidate ();
         }
 
-        private void MapPropertyChanged(object sender, PropertyChangedEventArgs e)
+        void MapPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "Envelope")
             {
@@ -241,7 +242,7 @@ namespace itinero.Android
             }
         }
 
-        private void Set2DViewport()
+        void Set2DViewport()
         {
             GL.MatrixMode(All.Projection);
             GL.LoadIdentity();
@@ -271,7 +272,7 @@ namespace itinero.Android
             SwapBuffers();
         }
 
-        private void OnViewportInitialized()
+        void OnViewportInitialized()
         {
             var handler = ViewportInitialized;
             if (handler != null) handler(this, new EventArgs());
