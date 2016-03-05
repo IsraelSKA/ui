@@ -14,16 +14,15 @@ namespace itinero.Samples.Data
         public static ILayer Create()
         {
             return new Layer("PointLayer")
+            {
+                DataSource = new MemoryProvider(new[]
                 {
-                    DataSource = new MemoryProvider(new[]
-                        {
-                            CreatePointWithLabel(), 
-                            CreatePointWithDefaultStyle(),
-                            CreatePointWithSmallBlackDot(),
-                        }),
-                    Style = null
-
-                };
+                    CreatePointWithLabel(), 
+                    CreatePointWithDefaultStyle(),
+                    CreatePointWithSmallBlackDot(),
+                }),
+                Style = null
+            };
         }
 
         private static Feature CreatePointWithLabel()
@@ -45,17 +44,17 @@ namespace itinero.Samples.Data
             var feature = new Feature { Geometry = new Point(1000000, 0) };
 
             feature.Styles.Add(new SymbolStyle
-                {
-                    SymbolScale = 2.0f,
-                    Fill = new Brush { Color = null },
-                    Outline = new Pen { Color = Color.Green }
-                });
+            {
+                SymbolScale = 2.0f,
+                Fill = new Brush { Color = null },
+                Outline = new Pen { Color = Color.Green }
+            });
 
             feature.Styles.Add(new SymbolStyle
-                {
-                    SymbolScale = 0.5f,
-                    Fill = new Brush { Color = Color.Black },
-                });
+            {
+                SymbolScale = 0.5f,
+                Fill = new Brush { Color = Color.Black },
+            });
 
             return feature;
         }
@@ -70,13 +69,13 @@ namespace itinero.Samples.Data
             var bitmapId = BitmapRegistry.Instance.Register(image);
 
             feature.Styles.Add(new SymbolStyle
-                {
-                    BitmapId = bitmapId,
-                    SymbolType = SymbolType.Ellipse,
-                    UnitType = UnitType.Pixel,
-                    SymbolScale = 0.5
+            {
+                BitmapId = bitmapId,
+                SymbolType = SymbolType.Ellipse,
+                UnitType = UnitType.Pixel,
+                SymbolScale = 0.5
+            });
 
-                });
             return feature;
         }
 
@@ -103,12 +102,12 @@ namespace itinero.Samples.Data
         public static ILayer CreateStackedLabelLayer(IProvider provider)
         {
             return new LabelLayer("stacks")
-                {
-                    DataSource = provider,
-                    UseLabelStacking = true,
-                    LabelColumn = "Label",
-                    Style = new LabelStyle(),
-                };
+            {
+                DataSource = provider,
+                UseLabelStacking = true,
+                LabelColumn = "Label",
+                Style = new LabelStyle(),
+            };
         }
 
         public static Point GenerateRandomPoint(BoundingBox box)
@@ -128,23 +127,23 @@ namespace itinero.Samples.Data
         public static ILayer CreateRandomPointLayer(IProvider dataSource)
         {
             return new Layer("pointLayer")
-                {
-                    DataSource = dataSource,
-                    Style = new SymbolStyle { SymbolScale = 1, Fill = new Brush(Color.Blue) }
-                };
+            {
+                DataSource = dataSource,
+                Style = new SymbolStyle { SymbolScale = 1, Fill = new Brush(Color.Blue) }
+            };
         }
 
         public static ILayer CreateRandomPolygonLayer(BoundingBox envelope, int count = 10)
         {
             return new Layer("pointLayer")
+            {
+                DataSource = new MemoryProvider(GenerateRandomPolygons(envelope, count)),
+                Style = new VectorStyle
                 {
-                    DataSource = new MemoryProvider(GenerateRandomPolygons(envelope, count)),
-                    Style = new VectorStyle
-                        {
-                            Fill = new Brush(Color.Orange),
-                            Outline = new Pen(Color.Red, 2)
-                        }
-                };
+                    Fill = new Brush(Color.Orange),
+                    Outline = new Pen(Color.Red, 2)
+                }
+            };
         }
 
         private static IEnumerable<IGeometry> GenerateRandomPolygons(BoundingBox envelope, int count)
@@ -152,14 +151,15 @@ namespace itinero.Samples.Data
             var result = new List<IGeometry>();
             for (var i = 0; i < count; i++)
             {
-                result.Add(new Polygon(
-                    new LinearRing(
-                        new List<Point>
-                        {
-                            GenerateRandomPoint(envelope),
-                            GenerateRandomPoint(envelope),
-                            GenerateRandomPoint(envelope)
-                        })));
+                result.Add(
+                    new Polygon(
+                        new LinearRing(
+                            new List<Point>
+                            {
+                                GenerateRandomPoint(envelope),
+                                GenerateRandomPoint(envelope),
+                                GenerateRandomPoint(envelope)
+                            })));
             }
             return result;
         }
