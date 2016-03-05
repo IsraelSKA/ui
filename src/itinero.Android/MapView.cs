@@ -13,6 +13,7 @@ using Math = System.Math;
 
 namespace itinero.Android
 {
+    [Obsolete("Replace by MapControl")]
     public class MapView : View
     {
         private const int None = 0;
@@ -45,11 +46,6 @@ namespace itinero.Android
             Initialize();
         }
 
-        private void ViewportOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
-        {
-            RefreshGraphics();
-        }
-
         public void Initialize()
         {
             Map = new Map();
@@ -61,8 +57,7 @@ namespace itinero.Android
         private void InitializeViewport()
         {
             if (Math.Abs(Width - 0f) < Mapsui.Utilities.Constants.Epsilon) return;
-            if (_map == null) return;
-            if (_map.Envelope == null) return;
+            if (_map?.Envelope == null) return;
             if (Math.Abs(_map.Envelope.Width - 0d) < Mapsui.Utilities.Constants.Epsilon) return;
             if (Math.Abs(_map.Envelope.Height - 0d) < Mapsui.Utilities.Constants.Epsilon) return;
             if (_map.Envelope.GetCentroid() == null) return;
