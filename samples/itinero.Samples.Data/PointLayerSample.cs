@@ -1,11 +1,11 @@
-﻿using Mapsui.Geometries;
+﻿using System;
+using System.Collections.Generic;
+using Mapsui.Geometries;
 using Mapsui.Layers;
 using Mapsui.Providers;
 using Mapsui.Styles;
-using System;
-using System.Collections.Generic;
 
-namespace Mapsui.Samples.Common
+namespace itinero.Samples.Data
 {
     public static class PointLayerSample
     {
