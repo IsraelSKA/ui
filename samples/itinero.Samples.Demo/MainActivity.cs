@@ -2,8 +2,8 @@
 using Android.OS;
 using BruTile.Predefined;
 using itinero.Android;
+using itinero.Samples.Data;
 using Mapsui.Layers;
-using Mapsui.Samples.Common;
 using Mapsui.Styles;
 
 namespace itinero.Samples.Demo
@@ -11,8 +11,6 @@ namespace itinero.Samples.Demo
     [Activity(Label = "itinero.Samples.Demo", MainLauncher = true, Icon = "@drawable/icon")]
     public class MainActivity : Activity
     {
-        int count = 1;
-
         protected override void OnCreate(Bundle bundle)
         {
             base.OnCreate(bundle);
