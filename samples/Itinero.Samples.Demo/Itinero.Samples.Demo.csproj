@@ -91,9 +91,9 @@
       <Project>{2A4034B5-D9FE-4D89-BF4B-7AA0F1E58646}</Project>
       <Name>Itinero.Android</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Itinero.Samples.Data\Itinero.Samples.Data.csproj">
-      <Project>{69328941-3605-42C1-924C-533F87F774B9}</Project>
-      <Name>Itinero.Samples.Data</Name>
+    <ProjectReference Include="..\Itinero.Code.Samples\Itinero.Code.Samples.csproj">
+      <Project>{28681778-cd03-4e87-9191-55fe2098b90c}</Project>
+      <Name>Itinero.Code.Samples</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
