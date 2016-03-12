@@ -87,13 +87,13 @@
     <None Include="Properties\AndroidManifest.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\itinero.Android\Itinero.Android.csproj">
+    <ProjectReference Include="..\..\src\Itinero.Android\Itinero.Android.csproj">
       <Project>{2A4034B5-D9FE-4D89-BF4B-7AA0F1E58646}</Project>
       <Name>Itinero.Android</Name>
     </ProjectReference>
-    <ProjectReference Include="..\itinero.Samples.Data\itinero.Samples.Data.csproj">
+    <ProjectReference Include="..\Itinero.Samples.Data\Itinero.Samples.Data.csproj">
       <Project>{69328941-3605-42C1-924C-533F87F774B9}</Project>
-      <Name>itinero.Samples.Data</Name>
+      <Name>Itinero.Samples.Data</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
