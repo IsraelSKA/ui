@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 using Mapsui.Geometries;
 using Mapsui.Layers;
@@ -14,24 +15,17 @@ namespace Itinero.Code.Samples
 
         public static ILayer CreateLayer(BoundingBox envelope, int count = 25)
         {
-            return new Layer("pointLayer")
+            return new Layer("Random points")
             {
                 DataSource = new MemoryProvider(GenerateRandomPoints(envelope, count)),
-                Style = CreateBitmapStyle("Itinero.Samples.Data.Images.marker.png")
+                Style = new SymbolStyle { BitmapId = BitmapRegistry.Instance.Register(GetImageStream()) }
             };
         }
-
-        public static SymbolStyle CreateBitmapStyle(string embeddedResourcePath)
+        
+        private static Stream GetImageStream()
         {
-            var bitmapId = GetBitmapIdForEmbeddedResource(embeddedResourcePath);
-            return new SymbolStyle { BitmapId = bitmapId };
-        }
-
-        public static int GetBitmapIdForEmbeddedResource(string imagePath)
-        {
-            var image = Assembly.GetExecutingAssembly().GetManifestResourceStream(imagePath);
-            var bitmapId = BitmapRegistry.Instance.Register(image);
-            return bitmapId;
+            var embeddedResourcePath = "Itinero.Samples.Data.Images.marker.png";
+            return Assembly.GetExecutingAssembly().GetManifestResourceStream(embeddedResourcePath);
         }
 
         public static IEnumerable<IGeometry> GenerateRandomPoints(BoundingBox box, int count = 25)

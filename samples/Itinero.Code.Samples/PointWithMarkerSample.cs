@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.IO;
+using System.Reflection;
 using Mapsui.Geometries;
 using Mapsui.Layers;
 using Mapsui.Providers;
@@ -10,7 +11,7 @@ namespace Itinero.Code.Samples
     {
         public static ILayer CreateLayer()
         {
-            return new Layer("Points with markers")
+            return new Layer("Point")
             {
                 DataSource = new MemoryProvider(CreateBitmapPoint())
             };
@@ -19,21 +20,14 @@ namespace Itinero.Code.Samples
         private static Feature CreateBitmapPoint()
         {
             var feature = new Feature {Geometry = new Point(0, 1000000)};
-            feature.Styles.Add(CreateBitmapStyle("Itinero.Samples.Data.Images.loc.png"));
+            feature.Styles.Add(new SymbolStyle { BitmapId = BitmapRegistry.Instance.Register(GetImageStream()) });
             return feature;
         }
 
-        public static SymbolStyle CreateBitmapStyle(string embeddedResourcePath)
+        private static Stream GetImageStream()
         {
-            var bitmapId = GetBitmapIdForEmbeddedResource(embeddedResourcePath);
-            return new SymbolStyle {BitmapId = bitmapId};
-        }
-
-        public static int GetBitmapIdForEmbeddedResource(string imagePath)
-        {
-            var image = Assembly.GetExecutingAssembly().GetManifestResourceStream(imagePath);
-            var bitmapId = BitmapRegistry.Instance.Register(image);
-            return bitmapId;
+            var embeddedResourcePath = "Itinero.Samples.Data.Images.loc.png";
+            return Assembly.GetExecutingAssembly().GetManifestResourceStream(embeddedResourcePath);
         }
     }
 }
