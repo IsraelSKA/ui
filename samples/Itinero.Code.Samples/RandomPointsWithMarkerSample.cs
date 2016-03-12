@@ -18,6 +18,7 @@ namespace Itinero.Code.Samples
             return new Layer("Random points")
             {
                 DataSource = new MemoryProvider(GenerateRandomPoints(envelope, count)),
+                // todo use correct offset for bitmap (it points to center bottom)
                 Style = new SymbolStyle { BitmapId = BitmapRegistry.Instance.Register(GetImageStream()) }
             };
         }
