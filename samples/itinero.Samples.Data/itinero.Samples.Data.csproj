@@ -8,8 +8,8 @@
     <ProjectGuid>{69328941-3605-42C1-924C-533F87F774B9}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>itinero.Samples.Data</RootNamespace>
-    <AssemblyName>itinero.Samples.Data</AssemblyName>
+    <RootNamespace>Itinero.Samples.Data</RootNamespace>
+    <AssemblyName>Itinero.Samples.Data</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>

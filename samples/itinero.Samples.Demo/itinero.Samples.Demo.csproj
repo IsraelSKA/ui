@@ -7,8 +7,8 @@
     <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>itinero.Samples.Demo</RootNamespace>
-    <AssemblyName>itinero.Samples.Demo</AssemblyName>
+    <RootNamespace>Itinero.Samples.Demo</RootNamespace>
+    <AssemblyName>Itinero.Samples.Demo</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <AndroidApplication>true</AndroidApplication>
     <AndroidResgenFile>Resources\Resource.Designer.cs</AndroidResgenFile>
@@ -87,9 +87,9 @@
     <None Include="Properties\AndroidManifest.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\itinero.Android\itinero.Android.csproj">
+    <ProjectReference Include="..\..\src\itinero.Android\Itinero.Android.csproj">
       <Project>{2A4034B5-D9FE-4D89-BF4B-7AA0F1E58646}</Project>
-      <Name>itinero.Android</Name>
+      <Name>Itinero.Android</Name>
     </ProjectReference>
     <ProjectReference Include="..\itinero.Samples.Data\itinero.Samples.Data.csproj">
       <Project>{69328941-3605-42C1-924C-533F87F774B9}</Project>
