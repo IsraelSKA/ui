@@ -2,9 +2,8 @@
 using Android.OS;
 using BruTile.Predefined;
 using Itinero.Android;
-using Itinero.Samples.Data;
+using Itinero.Code.Samples;
 using Mapsui.Layers;
-using Mapsui.Styles;
 
 namespace Itinero.Samples.Demo
 {

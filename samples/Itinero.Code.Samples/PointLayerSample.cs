@@ -6,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace Itinero.Samples.Data
+namespace Itinero.Code.Samples
 {
     public static class PointLayerSample
     {
