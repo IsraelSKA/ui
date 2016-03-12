@@ -11,7 +11,7 @@ using Mapsui.Fetcher;
 using Mapsui.Rendering.Android;
 using Math = System.Math;
 
-namespace itinero.Android
+namespace Itinero.Android
 {
     [Obsolete("Replace by MapControl")]
     public class MapView : View

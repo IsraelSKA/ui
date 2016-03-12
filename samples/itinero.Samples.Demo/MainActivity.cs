@@ -1,14 +1,14 @@
 ﻿using Android.App;
 using Android.OS;
 using BruTile.Predefined;
-using itinero.Android;
-using itinero.Samples.Data;
+using Itinero.Android;
+using Itinero.Samples.Data;
 using Mapsui.Layers;
 using Mapsui.Styles;
 
-namespace itinero.Samples.Demo
+namespace Itinero.Samples.Demo
 {
-    [Activity(Label = "itinero.Samples.Demo", MainLauncher = true, Icon = "@drawable/icon")]
+    [Activity(Label = "Itinero.Samples.Demo", MainLauncher = true, Icon = "@drawable/icon")]
     public class MainActivity : Activity
     {
         protected override void OnCreate(Bundle bundle)

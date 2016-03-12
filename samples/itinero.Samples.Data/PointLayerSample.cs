@@ -5,7 +5,7 @@ using Mapsui.Layers;
 using Mapsui.Providers;
 using Mapsui.Styles;
 
-namespace itinero.Samples.Data
+namespace Itinero.Samples.Data
 {
     public static class PointLayerSample
     {
@@ -63,7 +63,7 @@ namespace itinero.Samples.Data
         {
             var feature = new Feature { Geometry = new Point(0, 1000000) };
 
-            const string imagePath = "itinero.Samples.Data.Images.loc.png";
+            const string imagePath = "Itinero.Samples.Data.Images.loc.png";
             var image = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream(imagePath);
             if (image == null) throw new Exception($"Could not find image resource at {imagePath}");
             var bitmapId = BitmapRegistry.Instance.Register(image);

@@ -3,7 +3,7 @@ using Mapsui.Layers;
 using Mapsui.Providers;
 using Mapsui.Styles;
 
-namespace itinero.Samples.Data
+namespace Itinero.Samples.Data
 {
     public static class LineStringSample
     {

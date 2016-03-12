@@ -15,7 +15,7 @@ using OpenTK.Graphics.ES11;
 using OpenTK.Platform.Android;
 using Math = System.Math;
 
-namespace itinero.Android
+namespace Itinero.Android
 {
     public class MapControl : AndroidGameView
     {

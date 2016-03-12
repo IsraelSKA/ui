@@ -9,9 +9,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: global::Android.Runtime.ResourceDesignerAttribute("itinero.Android.Resource", IsApplication=false)]
+[assembly: global::Android.Runtime.ResourceDesignerAttribute("Itinero.Android.Resource", IsApplication=false)]
 
-namespace itinero.Android
+namespace Itinero.Android
 {
 	
 	
