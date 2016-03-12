@@ -7,7 +7,7 @@ namespace Itinero.Code.Samples
 {
     public static class LineStringSample
     {
-        public static ILayer CreateLineStringLayer(IStyle style = null)
+        public static ILayer CreateLayer()
         {
             return new MemoryLayer
             {
@@ -31,7 +31,7 @@ namespace Itinero.Code.Samples
                     )}
                 ),
                 Name = "LineStringLayer",
-                Style = style
+                Style = CreateLineStringStyle()
             };
         }
 
