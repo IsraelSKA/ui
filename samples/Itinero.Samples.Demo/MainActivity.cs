@@ -28,31 +28,6 @@ namespace Itinero.Samples.Demo
 
             mapControl.Map.Viewport.RenderResolutionMultiplier = 2;
         }
-        private static TileLayer CreateTileLayer()
-        {
-            return new TileLayer(KnownTileSources.Create()) { Name = "OSM" };
-        }
-
-        private static IStyle CreatePointLayerStyle()
-        {
-            return new SymbolStyle
-            {
-                SymbolScale = 1,
-                Fill = new Brush(Color.Cyan),
-                Outline = { Color = Color.White, Width = 4 },
-                Line = null
-            };
-        }
-
-        private static IStyle CreateLineStringStyle()
-        {
-            return new VectorStyle
-            {
-                Fill = null,
-                Outline = null,
-                Line = { Color = Color.Red, Width = 4 }
-            };
-        }
     }
 }
 
