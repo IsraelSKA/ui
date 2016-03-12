@@ -19,13 +19,13 @@ namespace Itinero.Samples.Demo
             SetContentView(Resource.Layout.Main);
 
             var mapControl = FindViewById<MapControl>(Resource.Id.mapcontrol);
-            var tileLayer = CreateTileLayer();
-            mapControl.Map.Layers.Add(tileLayer);
-            mapControl.Map.Layers.Add(LineStringSample.CreateLineStringLayer(CreateLineStringStyle()));
-            var pointLayer = PointLayerSample.CreateRandomPointLayer(mapControl.Map.Envelope);
-            pointLayer.Style = CreatePointLayerStyle();
-            mapControl.Map.Layers.Add(pointLayer);
+
+            mapControl.Map.Layers.Add(new TileLayer(KnownTileSources.Create()) { Name = "OSM" });
+            mapControl.Map.Layers.Add(LineStringSample.CreateLineStringLayer(LineStringSample.CreateLineStringStyle()));
+            mapControl.Map.Layers.Add(PointLayerSample.CreateRandomPointLayer(mapControl.Map.Envelope,
+                style: PointLayerSample.CreateBitmapStyle("Itinero.Samples.Data.Images.marker.png")));
             mapControl.Map.Layers.Add(PointLayerSample.CreateBitmapPointLayer());
+
             mapControl.Map.Viewport.RenderResolutionMultiplier = 2;
         }
         private static TileLayer CreateTileLayer()

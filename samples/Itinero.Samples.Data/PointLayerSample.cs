@@ -1,9 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using Mapsui.Geometries;
+﻿using Mapsui.Geometries;
 using Mapsui.Layers;
 using Mapsui.Providers;
 using Mapsui.Styles;
+using System;
+using System.Collections.Generic;
+using System.Reflection;
 
 namespace Itinero.Samples.Data
 {
@@ -19,7 +20,7 @@ namespace Itinero.Samples.Data
                 {
                     CreatePointWithLabel(), 
                     CreatePointWithDefaultStyle(),
-                    CreatePointWithSmallBlackDot(),
+                    CreatePointWithSmallBlackDot()
                 }),
                 Style = null
             };
@@ -62,21 +63,21 @@ namespace Itinero.Samples.Data
         private static Feature CreateBitmapPoint()
         {
             var feature = new Feature { Geometry = new Point(0, 1000000) };
-
-            const string imagePath = "Itinero.Samples.Data.Images.loc.png";
-            var image = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream(imagePath);
-            if (image == null) throw new Exception($"Could not find image resource at {imagePath}");
-            var bitmapId = BitmapRegistry.Instance.Register(image);
-
-            feature.Styles.Add(new SymbolStyle
-            {
-                BitmapId = bitmapId,
-                SymbolType = SymbolType.Ellipse,
-                UnitType = UnitType.Pixel,
-                SymbolScale = 0.5
-            });
-
+            feature.Styles.Add(CreateBitmapStyle("Itinero.Samples.Data.Images.loc.png"));
             return feature;
+        }
+
+        public static SymbolStyle CreateBitmapStyle(string embeddedResourcePath)
+        {
+            var bitmapId = GetBitmapIdForEmbeddedResource(embeddedResourcePath);
+            return new SymbolStyle { BitmapId = bitmapId };
+        }
+
+        public static int GetBitmapIdForEmbeddedResource(string imagePath)
+        {
+            var image = Assembly.GetExecutingAssembly().GetManifestResourceStream(imagePath);
+            var bitmapId = BitmapRegistry.Instance.Register(image);
+            return bitmapId;
         }
 
         public static IEnumerable<IGeometry> GenerateRandomPoints(BoundingBox box, int count = 25)
@@ -92,10 +93,10 @@ namespace Itinero.Samples.Data
         public static ILayer CreateRandomPointLayerWithLabel(IProvider dataSource)
         {
             var styleList = new StyleCollection
-                {
-                    new SymbolStyle {SymbolScale = 1, Fill = new Brush(Color.Indigo)},
-                    new LabelStyle {Text = "TestLabel", HorizontalAlignment = LabelStyle.HorizontalAlignmentEnum.Left, Offset = new Offset{ X= 16.0 }}
-                };
+            {
+                new SymbolStyle {SymbolScale = 1, Fill = new Brush(Color.Indigo)},
+                new LabelStyle {Text = "TestLabel", HorizontalAlignment = LabelStyle.HorizontalAlignmentEnum.Left, Offset = new Offset{ X= 16.0 }}
+            };
             return new Layer("pointLayer") { DataSource = dataSource, Style = styleList };
         }
 
@@ -115,13 +116,13 @@ namespace Itinero.Samples.Data
             return new Point(Random.NextDouble() * box.Width + box.Left, Random.NextDouble() * box.Height - box.Top);
         }
 
-        public static ILayer CreateRandomPointLayer(BoundingBox envelope, int count = 25)
+        public static ILayer CreateRandomPointLayer(BoundingBox envelope, int count = 25, IStyle style = null)
         {
             return new Layer("pointLayer")
-                {
-                    DataSource = new MemoryProvider(GenerateRandomPoints(envelope, count)),
-                    Style = new VectorStyle { Fill = new Brush(Color.White) },
-                };
+            {
+                DataSource = new MemoryProvider(GenerateRandomPoints(envelope, count)),
+                Style = style ?? new VectorStyle { Fill = new Brush(Color.White) }
+            };
         }
 
         public static ILayer CreateRandomPointLayer(IProvider dataSource)
@@ -151,15 +152,14 @@ namespace Itinero.Samples.Data
             var result = new List<IGeometry>();
             for (var i = 0; i < count; i++)
             {
-                result.Add(
-                    new Polygon(
-                        new LinearRing(
-                            new List<Point>
-                            {
-                                GenerateRandomPoint(envelope),
-                                GenerateRandomPoint(envelope),
-                                GenerateRandomPoint(envelope)
-                            })));
+                result.Add(new Polygon(
+                    new LinearRing(
+                        new List<Point>
+                        {
+                            GenerateRandomPoint(envelope),
+                            GenerateRandomPoint(envelope),
+                            GenerateRandomPoint(envelope)
+                        })));
             }
             return result;
         }
@@ -177,8 +177,7 @@ namespace Itinero.Samples.Data
         {
             return new Layer("bitmapPointLayer")
             {
-                DataSource = new MemoryProvider(CreateBitmapPoint()),
-                Style = style,
+                DataSource = new MemoryProvider(CreateBitmapPoint())
             };
         }
 

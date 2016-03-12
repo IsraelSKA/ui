@@ -35,6 +35,9 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
+    <EmbeddedResource Include="Images\marker.png" />
+    <EmbeddedResource Include="Images\marker_popup.9.png" />
+    <EmbeddedResource Include="Images\marker_small.png" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="LineStringSample.cs" />
