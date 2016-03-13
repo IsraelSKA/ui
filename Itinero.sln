@@ -19,6 +19,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution", "Solution", "{6D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Itinero.Code.Samples", "samples\Itinero.Code.Samples\Itinero.Code.Samples.csproj", "{28681778-CD03-4E87-9191-55FE2098B90C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Itinero.Wpf.Samples", "samples\Itinero.Wpf.Samples\Itinero.Wpf.Samples.csproj", "{023E6325-BCBE-469E-B375-2EC553F0F9B9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{28681778-CD03-4E87-9191-55FE2098B90C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{28681778-CD03-4E87-9191-55FE2098B90C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{28681778-CD03-4E87-9191-55FE2098B90C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{023E6325-BCBE-469E-B375-2EC553F0F9B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{023E6325-BCBE-469E-B375-2EC553F0F9B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{023E6325-BCBE-469E-B375-2EC553F0F9B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{023E6325-BCBE-469E-B375-2EC553F0F9B9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -47,5 +53,6 @@ Global
 		{2A4034B5-D9FE-4D89-BF4B-7AA0F1E58646} = {F1BE3410-F43A-41F9-A369-D0D5F6F6B6B5}
 		{DA9F8AC0-3AFC-4116-B9F3-D8D7FD3BD062} = {BC036AD8-FFA3-42EA-B84D-E7CD5FCED54D}
 		{28681778-CD03-4E87-9191-55FE2098B90C} = {BC036AD8-FFA3-42EA-B84D-E7CD5FCED54D}
+		{023E6325-BCBE-469E-B375-2EC553F0F9B9} = {BC036AD8-FFA3-42EA-B84D-E7CD5FCED54D}
 	EndGlobalSection
 EndGlobal
