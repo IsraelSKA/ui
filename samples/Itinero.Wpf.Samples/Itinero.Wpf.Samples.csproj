@@ -134,6 +134,12 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Itinero.Code.Samples\Itinero.Code.Samples.csproj">
+      <Project>{28681778-CD03-4E87-9191-55FE2098B90C}</Project>
+      <Name>Itinero.Code.Samples</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

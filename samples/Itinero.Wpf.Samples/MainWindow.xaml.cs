@@ -1,4 +1,5 @@
 ﻿using BruTile.Predefined;
+using Itinero.Code.Samples;
 using Mapsui.Layers;
 
 namespace Itinero.Wpf.Samples
@@ -12,7 +13,11 @@ namespace Itinero.Wpf.Samples
         {
             InitializeComponent();
 
-            MapControl.Map.Layers.Add(new TileLayer(KnownTileSources.Create()) { Name = "OpenStreetMap"});
+            MapControl.Map.Layers.Add(OsmTilesSample.CreateLayer());
+            MapControl.Map.Layers.Add(LineStringSample.CreateLayer());
+            MapControl.Map.Layers.Add(RandomPointsWithMarkerSample.CreateLayer(MapControl.Map.Envelope));
+            MapControl.Map.Layers.Add(PointWithMarkerSample.CreateLayer());
+
             MapsuiLayerList.Initialize(MapControl.Map.Layers);
         }
     }
