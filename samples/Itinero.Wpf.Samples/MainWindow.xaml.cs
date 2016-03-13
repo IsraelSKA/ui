@@ -1,6 +1,7 @@
 ﻿using BruTile.Predefined;
 using Itinero.Code.Samples;
 using Mapsui.Layers;
+using SQLite.Net.Platform.Win32;
 
 namespace Itinero.Wpf.Samples
 {
@@ -14,6 +15,7 @@ namespace Itinero.Wpf.Samples
             InitializeComponent();
 
             MapControl.Map.Layers.Add(OsmTilesSample.CreateLayer());
+            MapControl.Map.Layers.Add(MbTilesSample.CreateLayer(new SQLitePlatformWin32()));
             MapControl.Map.Layers.Add(LineStringSample.CreateLayer());
             MapControl.Map.Layers.Add(RandomPointsWithMarkerSample.CreateLayer(MapControl.Map.Envelope));
             MapControl.Map.Layers.Add(PointWithMarkerSample.CreateLayer());
