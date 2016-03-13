@@ -14,11 +14,11 @@ namespace Itinero.Wpf.Samples
         
         public void Initialize(LayerCollection layers)
         {
-            items.Children.Clear();
+            Items.Children.Clear();
 
             foreach (var layer in layers)
             {
-                items.Children.Add(
+                Items.Children.Add(
                     new LayerListItem
                     {
                         LayerName = layer.Name,

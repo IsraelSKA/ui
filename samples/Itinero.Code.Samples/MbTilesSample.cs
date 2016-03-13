@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using BruTile;
+﻿using BruTile;
 using Mapsui.Layers;
 using SQLite.Net;
 using SQLite.Net.Interop;

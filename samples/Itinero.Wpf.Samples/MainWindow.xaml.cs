@@ -1,6 +1,4 @@
-﻿using BruTile.Predefined;
-using Itinero.Code.Samples;
-using Mapsui.Layers;
+﻿using Itinero.Code.Samples;
 using SQLite.Net.Platform.Win32;
 
 namespace Itinero.Wpf.Samples
