@@ -26,7 +26,7 @@ namespace Itinero.Code.Samples
 
         private static Stream GetImageStream()
         {
-            var embeddedResourcePath = "Itinero.Samples.Data.Images.loc.png";
+            var embeddedResourcePath = "Itinero.Code.Samples.Images.loc.png";
             var assembly = typeof (PointWithMarkerSample).GetTypeInfo().Assembly;
             return assembly.GetManifestResourceStream(embeddedResourcePath);
         }
