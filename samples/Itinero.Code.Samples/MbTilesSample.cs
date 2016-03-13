@@ -13,7 +13,7 @@ namespace Itinero.Code.Samples
             MbTilesTileSource.SetPlatform(platform);
             const string path = ".\\Data\\test.mbtiles";
             var tileSource = new MbTilesTileSource(new SQLiteConnectionString(path, false));
-            return new TileLayer(tileSource);
+            return new TileLayer(tileSource) { Name = "MbTiles" };
         }
     }
 }
