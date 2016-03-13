@@ -26,7 +26,8 @@ namespace Itinero.Code.Samples
         private static Stream GetImageStream()
         {
             var embeddedResourcePath = "Itinero.Samples.Data.Images.marker.png";
-            return Assembly.GetExecutingAssembly().GetManifestResourceStream(embeddedResourcePath);
+            var assembly = typeof(RandomPointsWithMarkerSample).GetTypeInfo().Assembly;
+            return assembly.GetManifestResourceStream(embeddedResourcePath);
         }
 
         public static IEnumerable<IGeometry> GenerateRandomPoints(BoundingBox box, int count = 25)

@@ -32,6 +32,8 @@ namespace Itinero.Samples.Demo
 			global::Mapsui.Rendering.Android.Resource.String.Hello = global::Itinero.Samples.Demo.Resource.String.Hello;
 			global::Mapsui.Rendering.OpenTK.Resource.String.ApplicationName = global::Itinero.Samples.Demo.Resource.String.ApplicationName;
 			global::Mapsui.Rendering.OpenTK.Resource.String.Hello = global::Itinero.Samples.Demo.Resource.String.Hello;
+			global::Mapsui.UI.Android.Resource.String.ApplicationName = global::Itinero.Samples.Demo.Resource.String.ApplicationName;
+			global::Mapsui.UI.Android.Resource.String.Hello = global::Itinero.Samples.Demo.Resource.String.Hello;
 		}
 		
 		public partial class Attribute
