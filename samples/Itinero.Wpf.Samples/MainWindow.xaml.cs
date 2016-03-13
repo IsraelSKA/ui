@@ -13,7 +13,7 @@ namespace Itinero.Wpf.Samples
             InitializeComponent();
 
             MapControl.Map.Layers.Add(OsmTilesSample.CreateLayer());
-            MapControl.Map.Layers.Add(MbTilesSample.CreateLayer(new SQLitePlatformWin32()));
+            MapControl.Map.Layers.Add(MbTilesSample.CreateLayer(new SQLitePlatformWin32(), ".\\Data\\test.mbtiles"));
             MapControl.Map.Layers.Add(LineStringSample.CreateLayer());
             MapControl.Map.Layers.Add(RandomPointsWithMarkerSample.CreateLayer(MapControl.Map.Envelope));
             MapControl.Map.Layers.Add(PointWithMarkerSample.CreateLayer());

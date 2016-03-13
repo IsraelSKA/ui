@@ -7,10 +7,9 @@ namespace Itinero.Code.Samples
 {
     public static class MbTilesSample
     {
-        public static ILayer CreateLayer(ISQLitePlatform platform)
+        public static ILayer CreateLayer(ISQLitePlatform platform, string path)
         {
             MbTilesTileSource.SetPlatform(platform);
-            const string path = ".\\Data\\test.mbtiles";
             var tileSource = new MbTilesTileSource(new SQLiteConnectionString(path, false));
             return new TileLayer(tileSource) { Name = "MbTiles" };
         }
