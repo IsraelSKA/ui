@@ -20,8 +20,13 @@ namespace Itinero.Code.Samples
         private static Feature CreateBitmapPoint()
         {
             var feature = new Feature {Geometry = new Point(0, 1000000)};
-            feature.Styles.Add(new SymbolStyle { BitmapId = BitmapRegistry.Instance.Register(GetImageStream()) });
+            feature.Styles.Add(CreateBitmapStyle());
             return feature;
+        }
+
+        public static Style CreateBitmapStyle()
+        {
+            return new SymbolStyle {BitmapId = BitmapRegistry.Instance.Register(GetImageStream()) };
         }
 
         private static Stream GetImageStream()

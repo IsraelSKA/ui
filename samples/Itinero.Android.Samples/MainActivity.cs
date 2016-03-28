@@ -1,7 +1,7 @@
 ﻿using Android.App;
 using Android.OS;
 using Itinero.Code.Samples;
-using Mapsui.UI.Android;
+using Itinero.Core;
 
 namespace Itinero.Android.Samples
 {
@@ -20,7 +20,7 @@ namespace Itinero.Android.Samples
             mapControl.Map.Layers.Add(OsmTilesSample.CreateLayer());
             mapControl.Map.Layers.Add(LineStringSample.CreateLayer());
             mapControl.Map.Layers.Add(RandomPointsWithMarkerSample.CreateLayer(mapControl.Map.Envelope));
-            mapControl.Map.Layers.Add(PointWithMarkerSample.CreateLayer());
+            mapControl.Map.Layers.Add(new DeviceLocationLayer { Style = PointWithMarkerSample.CreateBitmapStyle() });
 
             mapControl.Map.Viewport.RenderResolutionMultiplier = 2;
         }

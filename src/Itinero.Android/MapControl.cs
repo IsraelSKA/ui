@@ -62,8 +62,7 @@ namespace Itinero.Android
         {
             if (_viewportInitialized) return;
             if (Math.Abs(Width - 0f) < Mapsui.Utilities.Constants.Epsilon) return;
-            if (_map == null) return;
-            if (_map.Envelope == null) return;
+            if (_map?.Envelope == null) return;
             if (Math.Abs(_map.Envelope.Width - 0d) < Mapsui.Utilities.Constants.Epsilon) return;
             if (Math.Abs(_map.Envelope.Height - 0d) < Mapsui.Utilities.Constants.Epsilon) return;
             if (_map.Envelope.GetCentroid() == null) return;
