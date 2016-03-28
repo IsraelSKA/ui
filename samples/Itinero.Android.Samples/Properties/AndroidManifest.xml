@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="Itinero.Android.Samples.Itinero.Android.Samples" android:versionCode="1" android:versionName="1.0">
 	<uses-sdk android:minSdkVersion="16" />
-	<application android:label="Itinero.Android.Samples"></application>
+	<application android:label="Itinero.Android.Samples" android:theme="@android:style/Theme.Material"></application>
 </manifest>
