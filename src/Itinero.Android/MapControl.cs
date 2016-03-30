@@ -38,12 +38,7 @@ namespace Itinero.Android
         {
             Initialize();
         }
-
-        public MapControl(IntPtr handle, JniHandleOwnership transfer) : base(handle, transfer)
-        {
-            Initialize();
-        }
-
+        
         private void Initialize()
         {
             Map = new Map();
