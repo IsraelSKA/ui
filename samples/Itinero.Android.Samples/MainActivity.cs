@@ -15,7 +15,7 @@ namespace Itinero.Android.Samples
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
 
-            var mapControl = FindViewById<MapViewOpenTK>(Resource.Id.mapcontrol);
+            var mapControl = FindViewById<MapControl>(Resource.Id.mapcontrol);
 
             mapControl.Map.Layers.Add(OsmTilesSample.CreateLayer());
             mapControl.Map.Layers.Add(LineStringSample.CreateLayer());
