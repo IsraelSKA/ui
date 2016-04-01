@@ -27,8 +27,7 @@ namespace Itinero.Core
 
         private void LocatorOnPositionChanged(object sender, PositionEventArgs positionEventArgs)
         {
-            var empty = _deviceLocation.Geometry.IsEmpty();
-            _deviceLocation.Geometry = SphericalMercator.FromLonLat(positionEventArgs.Position.Longitude,
+            _deviceLocation.Geometry = SphericalMercator.FromLonLat(positionEventArgs.Position.Longitude, 
                 positionEventArgs.Position.Latitude);
             OnDataChanged(new DataChangedEventArgs());
         }
@@ -39,22 +38,9 @@ namespace Itinero.Core
             return new[] {_deviceLocation};
         }
 
-        private bool HasLocation
-        {
-            get
-            {
-                if (_deviceLocation?.Geometry == null || _deviceLocation.Geometry.IsEmpty()) return false;
-                return true;
-            }
-        }
+        private bool HasLocation => _deviceLocation?.Geometry != null && !_deviceLocation.Geometry.IsEmpty();
 
-        public override BoundingBox Envelope {
-            get
-            {
-                if (!HasLocation) return null;
-                return _deviceLocation.Geometry.GetBoundingBox();
-            }
-        }
+        public override BoundingBox Envelope => !HasLocation ? null : _deviceLocation.Geometry.GetBoundingBox();
 
         public override void AbortFetch()
         {
