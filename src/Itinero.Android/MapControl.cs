@@ -15,6 +15,7 @@ namespace Itinero.Android
         bool _viewportInitialized;
         Map _map;
         readonly OpenTKSurface _openTKSurface;
+        string _previousDataError = "";
 
         public event EventHandler<EventArgs> ViewportInitialized;
         
@@ -105,10 +106,19 @@ namespace Itinero.Android
 
         public void MapDataChanged(object sender, DataChangedEventArgs e)
         {
-            if (e.Cancelled || e.Error != null)
+            if (e.Cancelled)
             {
-                //todo test code below:
-                RunOnUiThread(Toast.MakeText(Context, e.Error.Message, ToastLength.Short).Show);
+                RunOnUiThread(() => Toast.MakeText(Context, "Data fetch was cancelled", ToastLength.Long).Show());
+            }
+            else if (e.Error != null)
+            {
+                if (_previousDataError != e.Error.Message) // Don't repeat the same failed tile request 
+                {
+                    var message = $"Error during data fetch: {e.Error.Message}";
+                    RunOnUiThread(() => Toast.MakeText(Context, message, ToastLength.Long).Show());
+                    _previousDataError = e.Error.Message;
+                }
+
             }
             else // no problems
             {
