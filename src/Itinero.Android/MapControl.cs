@@ -78,10 +78,6 @@ namespace Itinero.Android
                 _map.ViewChanged(true);
                 _openTKSurface.RefreshGraphics();
             }
-            else if (e.PropertyName == "Enabled")
-            {
-                _openTKSurface.RefreshGraphics();
-            }
         }
 
         void TryInitializeViewport()
