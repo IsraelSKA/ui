@@ -1,7 +1,6 @@
 ﻿using Android.App;
 using Android.OS;
 using Itinero.Code.Samples;
-using Itinero.Core;
 
 namespace Itinero.Android.Samples
 {

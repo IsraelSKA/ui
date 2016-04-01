@@ -138,10 +138,6 @@
     <None Include="Properties\AndroidManifest.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Itinero.Core\Itinero.Core.csproj">
-      <Project>{C2B0E787-7932-488B-96D0-94FBC9F491B0}</Project>
-      <Name>Itinero.Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\src\Itinero.Android\Itinero.Android.csproj">
       <Project>{2a4034b5-d9fe-4d89-bf4b-7aa0f1e58646}</Project>
       <Name>Itinero.Android</Name>
