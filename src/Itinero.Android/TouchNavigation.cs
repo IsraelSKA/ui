@@ -20,13 +20,14 @@ namespace Itinero.Android
             Zooming
         }
 
-        TouchState _mode = TouchState.None;
-        public PointF PreviousMap { get; private set; }
-        public PointF CurrentMap { get; private set; }
+        public PointF PreviousTouch { get; private set; }
+        public PointF Touch { get; private set; }
         public double Scale { get; private set; }
+
+        TouchState _mode = TouchState.None;
         float _oldDist = 1f;
         
-        public MapAction Touch(MotionEvent motionEvent)
+        public MapAction HandleTouch(MotionEvent motionEvent)
         {
             MapAction mapAction = MapAction.None;
 
@@ -36,33 +37,29 @@ namespace Itinero.Android
             switch (motionEvent.Action)
             {
                 case MotionEventActions.Down:
-                    PreviousMap = new PointF(x, y);
-                    CurrentMap = new PointF(x, y);
+                    PreviousTouch = new PointF(x, y);
+                    Touch = new PointF(x, y);
                     _mode = TouchState.Dragging;
                     break;
                 case MotionEventActions.Up:
-                    PreviousMap = null;
-                    _mode = TouchState.None;
                     return MapAction.RefreshData;
                 case MotionEventActions.Pointer2Down:
-                    PreviousMap = new PointF(CurrentMap.X, CurrentMap.Y);
-                    CurrentMap = new PointF(CurrentMap.X, CurrentMap.Y);
+                    PreviousTouch = new PointF(x, y);
+                    Touch = new PointF(x, y);
                     _oldDist = Spacing(motionEvent);
-                    MidPoint(CurrentMap, motionEvent);
-                    PreviousMap = CurrentMap;
+                    MidPoint(Touch, motionEvent);
+                    PreviousTouch = Touch;
                     _mode = TouchState.Zooming;
                     break;
                 case MotionEventActions.Pointer2Up:
-                    PreviousMap = null;
-                    _mode = TouchState.Dragging;
                     return MapAction.RefreshData;
                 case MotionEventActions.Move:
                     switch (_mode)
                     {
                         case TouchState.Dragging:
                             Scale = 1;
-                            PreviousMap = CurrentMap;
-                            CurrentMap = new PointF(x, y);
+                            PreviousTouch = Touch;
+                            Touch = new PointF(x, y);
                             mapAction = MapAction.RefreshGraphics;
                             break;
                         case TouchState.Zooming:
@@ -72,8 +69,8 @@ namespace Itinero.Android
                             Scale = newDist / _oldDist;
 
                             _oldDist = Spacing(motionEvent);
-                            PreviousMap = new PointF(CurrentMap.X, CurrentMap.Y);
-                            MidPoint(CurrentMap, motionEvent);
+                            PreviousTouch = new PointF(Touch.X, Touch.Y);
+                            MidPoint(Touch, motionEvent);
                             mapAction = MapAction.RefreshGraphics;
                             break;
                     }

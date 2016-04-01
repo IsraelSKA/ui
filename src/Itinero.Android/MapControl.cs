@@ -134,11 +134,14 @@ namespace Itinero.Android
         {
             if (Map.Lock) return;
 
-            var mapAction = _touchNavigation.Touch(args.Event);
+            var mapAction = _touchNavigation.HandleTouch(args.Event);
             if (mapAction == MapAction.RefreshGraphics)
             {
-                Map.Viewport.Transform(_touchNavigation.CurrentMap.X, _touchNavigation.CurrentMap.Y, 
-                    _touchNavigation.PreviousMap.X, _touchNavigation.PreviousMap.Y, _touchNavigation.Scale);
+                Map.Viewport.Transform(
+                    _touchNavigation.Touch.X, _touchNavigation.Touch.Y, 
+                    _touchNavigation.PreviousTouch.X, _touchNavigation.PreviousTouch.Y, 
+                    _touchNavigation.Scale);
+
                 _openTKSurface.RefreshGraphics();
             }
             else if (mapAction == MapAction.RefreshData) Map.ViewChanged(true);
