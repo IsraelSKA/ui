@@ -11,7 +11,7 @@ namespace Itinero.Android
 {
     public sealed class MapControl : FrameLayout
     {
-        readonly TouchNavigation _touchNavigation = new TouchNavigation();
+        readonly TouchHandler _touchHandler = new TouchHandler();
         bool _viewportInitialized;
         Map _map;
         readonly OpenTKSurface _openTKSurface;
@@ -134,13 +134,13 @@ namespace Itinero.Android
         {
             if (Map.Lock) return;
 
-            var mapAction = _touchNavigation.HandleTouch(args.Event);
+            var mapAction = _touchHandler.Handle(args.Event);
             if (mapAction == MapAction.RefreshGraphics)
             {
                 Map.Viewport.Transform(
-                    _touchNavigation.Touch.X, _touchNavigation.Touch.Y, 
-                    _touchNavigation.PreviousTouch.X, _touchNavigation.PreviousTouch.Y, 
-                    _touchNavigation.Scale);
+                    _touchHandler.Touch.X, _touchHandler.Touch.Y, 
+                    _touchHandler.PreviousTouch.X, _touchHandler.PreviousTouch.Y, 
+                    _touchHandler.Scale);
 
                 _openTKSurface.RefreshGraphics();
             }

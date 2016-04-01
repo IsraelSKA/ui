@@ -11,7 +11,7 @@ namespace Itinero.Android
         RefreshGraphics
     }
 
-    class TouchNavigation
+    class TouchHandler
     {
         enum TouchState
         {
@@ -27,7 +27,7 @@ namespace Itinero.Android
         TouchState _mode = TouchState.None;
         float _oldDist = 1f;
         
-        public MapAction HandleTouch(MotionEvent motionEvent)
+        public MapAction Handle(MotionEvent motionEvent)
         {
             MapAction mapAction = MapAction.None;
 
