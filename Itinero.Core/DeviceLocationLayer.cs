@@ -1,9 +1,12 @@
 ﻿using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
 using Mapsui.Fetcher;
 using Mapsui.Geometries;
 using Mapsui.Layers;
 using Mapsui.Projection;
 using Mapsui.Providers;
+using Mapsui.Styles;
 using Plugin.Geolocator;
 using Plugin.Geolocator.Abstractions;
 
@@ -17,12 +20,24 @@ namespace Itinero.Core
         {
             CRS = "EPSG:3857";
 
+            Style = CreateBitmapStyle();
+
             _deviceLocation = new Feature { Geometry = new Point()};
 
             var locator = CrossGeolocator.Current;
             locator.DesiredAccuracy = 50;
             locator.PositionChanged += LocatorOnPositionChanged;
             locator.StartListeningAsync(5000, 100);
+        }
+
+        public void StartListening()
+        {
+            CrossGeolocator.Current.StartListeningAsync(5000, 100);
+        }
+
+        public void StopListening()
+        {
+            CrossGeolocator.Current.StopListeningAsync();
         }
 
         private void LocatorOnPositionChanged(object sender, PositionEventArgs positionEventArgs)
@@ -38,9 +53,19 @@ namespace Itinero.Core
             return new[] {_deviceLocation};
         }
 
-        private bool HasLocation => _deviceLocation?.Geometry != null && !_deviceLocation.Geometry.IsEmpty();
+        private bool HasLocation
+        {
+            get { return _deviceLocation?.Geometry != null && 
+                    !_deviceLocation.Geometry.IsEmpty() &&
+                    CrossGeolocator.Current.IsListening &&
+                    CrossGeolocator.Current.IsGeolocationAvailable &&
+                    CrossGeolocator.Current.IsGeolocationEnabled; }
+        }
 
-        public override BoundingBox Envelope => !HasLocation ? null : _deviceLocation.Geometry.GetBoundingBox();
+        public override BoundingBox Envelope
+        {
+            get { return !HasLocation ? null : _deviceLocation.Geometry.GetBoundingBox(); }
+        }
 
         public override void AbortFetch()
         {
@@ -55,6 +80,18 @@ namespace Itinero.Core
         public override void ClearCache()
         {
             // no need to implement for DeviceLocationLayer
+        }
+
+        public static Style CreateBitmapStyle()
+        {
+            return new SymbolStyle { BitmapId = BitmapRegistry.Instance.Register(GetImageStream()) };
+        }
+
+        private static Stream GetImageStream()
+        {
+            var embeddedResourcePath = "Itinero.Core.Images.current_location.png";
+            var assembly = typeof(DeviceLocationLayer).GetTypeInfo().Assembly;
+            return assembly.GetManifestResourceStream(embeddedResourcePath);
         }
     }
 }

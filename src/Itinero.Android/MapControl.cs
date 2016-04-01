@@ -1,17 +1,39 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using Android.App;
 using Android.Content;
 using Android.Graphics;
 using Android.Util;
 using Android.Widget;
+using Itinero.Core;
 using Mapsui;
 using Mapsui.Fetcher;
+using Mapsui.Layers;
 
 namespace Itinero.Android
 {
     public sealed class MapControl : FrameLayout
     {
+        public bool ShowCurrentLocation
+        {
+            get
+            {
+                return _showCurrentLocation;
+            }
+            set
+            {
+                _showCurrentLocation = value; 
+                if (value) CurrentLocationLayer.StartListening();
+                else CurrentLocationLayer.StopListening();
+            }
+
+        } 
+        public DeviceLocationLayer CurrentLocationLayer { get; set; } = new DeviceLocationLayer();
+
+        private bool _showCurrentLocation = true;
         readonly TouchHandler _touchHandler = new TouchHandler();
         bool _viewportInitialized;
         Map _map;
@@ -24,6 +46,7 @@ namespace Itinero.Android
         {
             _openTKSurface = new OpenTKSurface(Context, attrs);
             AddView(_openTKSurface);
+            CurrentLocationLayer.DataChanged += (sender, args) => Invalidate();
 
             Map = new Map();
             Touch += OnTouch;
@@ -65,10 +88,7 @@ namespace Itinero.Android
 
         void MapRefreshGraphics(object sender, EventArgs e)
         {
-            RunOnUiThread(() => 
-            { 
-                Invalidate();
-            });
+            RunOnUiThread(Invalidate);
         }
 
         void MapPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -157,7 +177,14 @@ namespace Itinero.Android
         {
             if (!_viewportInitialized) if (!TryInitializeViewport()) return;
 
-            _openTKSurface.RefreshGraphics(Map.Viewport, Map.Layers, Map.BackColor);
+            ICollection<ILayer> layers = Map.Layers;
+            if (ShowCurrentLocation)
+            {
+                layers = layers.ToList();
+                layers.Add(CurrentLocationLayer);
+            }
+
+            _openTKSurface.RefreshGraphics(Map.Viewport, layers, Map.BackColor);
         }
     }
 }

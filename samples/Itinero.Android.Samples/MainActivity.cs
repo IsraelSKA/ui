@@ -20,8 +20,8 @@ namespace Itinero.Android.Samples
             mapControl.Map.Layers.Add(OsmTilesSample.CreateLayer());
             mapControl.Map.Layers.Add(LineStringSample.CreateLayer());
             mapControl.Map.Layers.Add(RandomPointsWithMarkerSample.CreateLayer(mapControl.Map.Envelope));
-            mapControl.Map.Layers.Add(new DeviceLocationLayer { Style = PointWithMarkerSample.CreateBitmapStyle() });
-
+            mapControl.ShowCurrentLocation = true;
+            
             mapControl.Map.Viewport.RenderResolutionMultiplier = 2;
         }
     }

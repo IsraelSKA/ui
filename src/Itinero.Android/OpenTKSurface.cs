@@ -1,7 +1,9 @@
 using System;
+using System.Collections.Generic;
 using Android.Content;
 using Android.Util;
 using Mapsui;
+using Mapsui.Layers;
 using Mapsui.Rendering.OpenTK;
 using Mapsui.Styles;
 using OpenTK;
@@ -17,7 +19,7 @@ namespace Itinero.Android
 
         Color _backColor;
         IViewport _viewport;
-        LayerCollection _layers;
+        IEnumerable<ILayer> _layers;
 
         public OpenTKSurface(Context context, IAttributeSet attrs) : base(context, attrs)
         {
@@ -54,7 +56,7 @@ namespace Itinero.Android
             GL.MatrixMode(All.Modelview);
         }
 
-        public void RefreshGraphics(IViewport viewport, LayerCollection layers, Color backColor)
+        public void RefreshGraphics(IViewport viewport, IEnumerable<ILayer> layers, Color backColor)
         {
             _backColor = backColor;
             _viewport = viewport;
