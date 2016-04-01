@@ -2,6 +2,7 @@ using System;
 using System.ComponentModel;
 using Android.App;
 using Android.Content;
+using Android.Graphics;
 using Android.Util;
 using Android.Widget;
 using Mapsui;
@@ -22,11 +23,12 @@ namespace Itinero.Android
         public MapControl(Context context, IAttributeSet attrs) : base(context, attrs)
         {
             _openTKSurface = new OpenTKSurface(Context, attrs);
-            
-            Map = new Map();
-            TryInitializeViewport();
             AddView(_openTKSurface);
+
+            Map = new Map();
             Touch += OnTouch;
+
+            SetWillNotDraw(false);
         }
 
         public Map Map
@@ -48,7 +50,6 @@ namespace Itinero.Android
                 }
 
                 _map = value;
-                _openTKSurface.Map = _map;
 
                 if (_map != null)
                 {
@@ -58,16 +59,15 @@ namespace Itinero.Android
                     _map.ViewChanged(true);
                 }
 
-                TryInitializeViewport();
-                _openTKSurface.RefreshGraphics();
+                Invalidate();
             }
         }
+
         void MapRefreshGraphics(object sender, EventArgs e)
         {
             RunOnUiThread(() => 
             { 
-                TryInitializeViewport();
-                _openTKSurface.RefreshGraphics();
+                Invalidate();
             });
         }
 
@@ -75,20 +75,19 @@ namespace Itinero.Android
         {
             if (e.PropertyName == nameof(Map.Envelope))
             {
-                TryInitializeViewport();
                 _map.ViewChanged(true);
-                _openTKSurface.RefreshGraphics();
+                Invalidate();
             }
         }
 
-        void TryInitializeViewport()
+        bool TryInitializeViewport()
         {
-            if (_viewportInitialized) return;
-            if (Math.Abs(Width - 0f) < Mapsui.Utilities.Constants.Epsilon) return;
-            if (_map?.Envelope == null) return;
-            if (Math.Abs(_map.Envelope.Width - 0d) < Mapsui.Utilities.Constants.Epsilon) return;
-            if (Math.Abs(_map.Envelope.Height - 0d) < Mapsui.Utilities.Constants.Epsilon) return;
-            if (_map.Envelope.GetCentroid() == null) return;
+            if (_viewportInitialized) return true;
+            if (Math.Abs(Width - 0f) < Mapsui.Utilities.Constants.Epsilon) return false;
+            if (_map?.Envelope == null) return false;
+            if (Math.Abs(_map.Envelope.Width - 0d) < Mapsui.Utilities.Constants.Epsilon) return false;
+            if (Math.Abs(_map.Envelope.Height - 0d) < Mapsui.Utilities.Constants.Epsilon) return false;
+            if (_map.Envelope.GetCentroid() == null) return false;
 
             if (double.IsNaN(_map.Viewport.Resolution))
                 _map.Viewport.Resolution = _map.Envelope.Width / Width;
@@ -99,9 +98,9 @@ namespace Itinero.Android
             if (Width >= 1080 && Height >= 1080) _map.Viewport.RenderResolutionMultiplier = 2;
 
             _viewportInitialized = true;
-            _openTKSurface.ViewportInitialized = true;
             OnViewportInitialized();
             _map.ViewChanged(true);
+            return true;
         }
 
         public void MapDataChanged(object sender, DataChangedEventArgs e)
@@ -122,11 +121,7 @@ namespace Itinero.Android
             }
             else // no problems
             {
-                RunOnUiThread(() =>
-                {
-                    TryInitializeViewport();
-                    _openTKSurface.RefreshGraphics();
-                });
+                RunOnUiThread(Invalidate);
             }
         }
 
@@ -153,9 +148,16 @@ namespace Itinero.Android
                     _touchHandler.PreviousTouch.X, _touchHandler.PreviousTouch.Y, 
                     _touchHandler.Scale);
 
-                _openTKSurface.RefreshGraphics();
+                Invalidate();
             }
             else if (mapAction == MapAction.RefreshData) Map.ViewChanged(true);
+        }
+        
+        protected override void OnDraw(Canvas canvas)
+        {
+            if (!_viewportInitialized) if (!TryInitializeViewport()) return;
+
+            _openTKSurface.RefreshGraphics(Map.Viewport, Map.Layers, Map.BackColor);
         }
     }
 }
