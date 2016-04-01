@@ -27,8 +27,8 @@ namespace Itinero.Core
 
         private void LocatorOnPositionChanged(object sender, PositionEventArgs positionEventArgs)
         {
-            _deviceLocation.Geometry = SphericalMercator.FromLonLat(positionEventArgs.Position.Longitude, 
-                positionEventArgs.Position.Latitude);
+            var position = positionEventArgs.Position;
+            _deviceLocation.Geometry = SphericalMercator.FromLonLat(position.Longitude, position.Latitude);
             OnDataChanged(new DataChangedEventArgs());
         }
 
