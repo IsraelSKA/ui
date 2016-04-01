@@ -31,7 +31,7 @@ namespace Itinero.Android
             }
 
         } 
-        public DeviceLocationLayer CurrentLocationLayer { get; set; } = new DeviceLocationLayer();
+        public CurrentLocationLayer CurrentLocationLayer { get; set; } = new CurrentLocationLayer();
 
         private bool _showCurrentLocation = true;
         readonly TouchHandler _touchHandler = new TouchHandler();

@@ -12,11 +12,11 @@ using Plugin.Geolocator.Abstractions;
 
 namespace Itinero.Core
 {
-    public class DeviceLocationLayer : BaseLayer
+    public class CurrentLocationLayer : BaseLayer
     {
         private readonly Feature _deviceLocation;
 
-        public DeviceLocationLayer()
+        public CurrentLocationLayer()
         {
             CRS = "EPSG:3857";
 
@@ -69,17 +69,17 @@ namespace Itinero.Core
 
         public override void AbortFetch()
         {
-            // no need to implement for DeviceLocationLayer
+            // no need to implement for CurrentLocationLayer
         }
 
         public override void ViewChanged(bool majorChange, BoundingBox extent, double resolution)
         {
-            // no need to implement for DeviceLocationLayer
+            // no need to implement for CurrentLocationLayer
         }
 
         public override void ClearCache()
         {
-            // no need to implement for DeviceLocationLayer
+            // no need to implement for CurrentLocationLayer
         }
 
         public static Style CreateBitmapStyle()
@@ -90,7 +90,7 @@ namespace Itinero.Core
         private static Stream GetImageStream()
         {
             var embeddedResourcePath = "Itinero.Core.Images.current_location.png";
-            var assembly = typeof(DeviceLocationLayer).GetTypeInfo().Assembly;
+            var assembly = typeof(CurrentLocationLayer).GetTypeInfo().Assembly;
             return assembly.GetManifestResourceStream(embeddedResourcePath);
         }
     }
