@@ -1,38 +1,34 @@
 using System;
 using Android.Graphics;
 using Android.Views;
-using Mapsui;
 
 namespace Itinero.Android
 {
-    enum TouchState
+    enum MapAction
     {
         None,
-        Dragging,
-        Zooming
+        RefreshData,
+        RefreshGraphics
     }
+
     class TouchNavigation
     {
-        TouchState _mode = TouchState.None;
-        PointF _previousMap;
-        PointF _currentMap;
-        PointF _previousMid = new PointF();
-        readonly PointF _currentMid = new PointF();
-        float _oldDist = 1f;
-        
-        public Map Map { get; set; }
-
-        public EventHandler RefreshGraphics;
-
-        private void OnRefresGraphics()
+        enum TouchState
         {
-            var handler = RefreshGraphics;
-            if (handler != null) RefreshGraphics(this, EventArgs.Empty);
+            None,
+            Dragging,
+            Zooming
         }
 
-        public void Touch(MotionEvent motionEvent)
+        TouchState _mode = TouchState.None;
+        public PointF PreviousMap { get; private set; }
+        public PointF CurrentMap { get; private set; }
+        public double Scale { get; private set; }
+        float _oldDist = 1f;
+        
+        public MapAction Touch(MotionEvent motionEvent)
         {
-            if (Map.Lock) return;
+            MapAction mapAction = MapAction.None;
 
             var x = (int)motionEvent.RawX;
             var y = (int)motionEvent.RawY;
@@ -40,55 +36,50 @@ namespace Itinero.Android
             switch (motionEvent.Action)
             {
                 case MotionEventActions.Down:
-                    _previousMap = null;
+                    PreviousMap = new PointF(x, y);
+                    CurrentMap = new PointF(x, y);
                     _mode = TouchState.Dragging;
                     break;
                 case MotionEventActions.Up:
-                    _previousMap = null;
+                    PreviousMap = null;
                     _mode = TouchState.None;
-                    Map.ViewChanged(true);
-                    break;
+                    return MapAction.RefreshData;
                 case MotionEventActions.Pointer2Down:
-                    _previousMap = null;
+                    PreviousMap = new PointF(CurrentMap.X, CurrentMap.Y);
+                    CurrentMap = new PointF(CurrentMap.X, CurrentMap.Y);
                     _oldDist = Spacing(motionEvent);
-                    MidPoint(_currentMid, motionEvent);
-                    _previousMid = _currentMid;
+                    MidPoint(CurrentMap, motionEvent);
+                    PreviousMap = CurrentMap;
                     _mode = TouchState.Zooming;
                     break;
                 case MotionEventActions.Pointer2Up:
-                    _previousMap = null;
-                    _previousMid = null;
+                    PreviousMap = null;
                     _mode = TouchState.Dragging;
-                    Map.ViewChanged(true);
-                    break;
+                    return MapAction.RefreshData;
                 case MotionEventActions.Move:
                     switch (_mode)
                     {
                         case TouchState.Dragging:
-                            _currentMap = new PointF(x, y);
-                            if (_previousMap != null)
-                            {
-                                Map.Viewport.Transform(_currentMap.X, _currentMap.Y, _previousMap.X, _previousMap.Y);
-                                OnRefresGraphics();
-                            }
-                            _previousMap = _currentMap;
+                            Scale = 1;
+                            PreviousMap = CurrentMap;
+                            CurrentMap = new PointF(x, y);
+                            mapAction = MapAction.RefreshGraphics;
                             break;
                         case TouchState.Zooming:
-                            if (motionEvent.PointerCount < 2) return;
+                            if (motionEvent.PointerCount < 2) return MapAction.None;
 
                             var newDist = Spacing(motionEvent);
-                            var scale = newDist / _oldDist;
+                            Scale = newDist / _oldDist;
 
                             _oldDist = Spacing(motionEvent);
-                            _previousMid = new PointF(_currentMid.X, _currentMid.Y);
-                            MidPoint(_currentMid, motionEvent);
-                            Map.Viewport.Transform(_currentMid.X, _currentMid.Y, _previousMid.X, _previousMid.Y,
-                                scale);
-                            OnRefresGraphics();
+                            PreviousMap = new PointF(CurrentMap.X, CurrentMap.Y);
+                            MidPoint(CurrentMap, motionEvent);
+                            mapAction = MapAction.RefreshGraphics;
                             break;
                     }
                     break;
             }
+            return mapAction;
         }
 
         static float Spacing(MotionEvent me)

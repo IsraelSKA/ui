@@ -24,8 +24,6 @@ namespace Itinero.Android
             
             Map = new Map();
             TryInitializeViewport();
-            _touchNavigation.Map = Map;
-            _touchNavigation.RefreshGraphics += (sender, args) => _openTKSurface.RefreshGraphics(); 
             AddView(_openTKSurface);
             Touch += OnTouch;
         }
@@ -134,7 +132,16 @@ namespace Itinero.Android
 
         void OnTouch(object sender, TouchEventArgs args)
         {
-            _touchNavigation.Touch(args.Event);
+            if (Map.Lock) return;
+
+            var mapAction = _touchNavigation.Touch(args.Event);
+            if (mapAction == MapAction.RefreshGraphics)
+            {
+                Map.Viewport.Transform(_touchNavigation.CurrentMap.X, _touchNavigation.CurrentMap.Y, 
+                    _touchNavigation.PreviousMap.X, _touchNavigation.PreviousMap.Y, _touchNavigation.Scale);
+                _openTKSurface.RefreshGraphics();
+            }
+            else if (mapAction == MapAction.RefreshData) Map.ViewChanged(true);
         }
     }
 }
