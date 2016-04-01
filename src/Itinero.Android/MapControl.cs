@@ -8,35 +8,24 @@ using Android.Graphics;
 using Android.Util;
 using Android.Widget;
 using Itinero.Core;
+using Java.Lang;
 using Mapsui;
 using Mapsui.Fetcher;
 using Mapsui.Layers;
+using Mapsui.Utilities;
+using Math = System.Math;
 
 namespace Itinero.Android
 {
     public sealed class MapControl : FrameLayout
     {
-        public bool ShowCurrentLocation
-        {
-            get { return _showCurrentLocation; }
-            set
-            {
-                _showCurrentLocation = value;
-                if (value) CurrentLocationLayer.StartListening();
-                else CurrentLocationLayer.StopListening();
-            }
-        }
-
-        public CurrentLocationLayer CurrentLocationLayer { get; set; } = new CurrentLocationLayer();
+        private readonly OpenTKSurface _openTKSurface;
+        private readonly TouchHandler _touchHandler = new TouchHandler();
+        private Map _map;
+        private string _previousDataError = "";
 
         private bool _showCurrentLocation = true;
-        readonly TouchHandler _touchHandler = new TouchHandler();
-        bool _viewportInitialized;
-        Map _map;
-        readonly OpenTKSurface _openTKSurface;
-        string _previousDataError = "";
-
-        public event EventHandler<EventArgs> ViewportInitialized;
+        private bool _viewportInitialized;
 
         public MapControl(Context context, IAttributeSet attrs) : base(context, attrs)
         {
@@ -49,6 +38,19 @@ namespace Itinero.Android
 
             SetWillNotDraw(false);
         }
+
+        public bool ShowCurrentLocation
+        {
+            get { return _showCurrentLocation; }
+            set
+            {
+                _showCurrentLocation = value;
+                if (value) CurrentLocationLayer.StartListening();
+                else CurrentLocationLayer.StopListening();
+            }
+        }
+
+        public CurrentLocationLayer CurrentLocationLayer { get; set; } = new CurrentLocationLayer();
 
         public Map Map
         {
@@ -79,12 +81,14 @@ namespace Itinero.Android
             }
         }
 
-        void MapRefreshGraphics(object sender, EventArgs e)
+        public event EventHandler<EventArgs> ViewportInitialized;
+
+        private void MapRefreshGraphics(object sender, EventArgs e)
         {
             RunOnUiThread(Invalidate);
         }
 
-        void MapPropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void MapPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(Map.Envelope))
             {
@@ -93,13 +97,13 @@ namespace Itinero.Android
             }
         }
 
-        bool TryInitializeViewport()
+        private bool TryInitializeViewport()
         {
             if (_viewportInitialized) return true;
-            if (Math.Abs(Width - 0f) < Mapsui.Utilities.Constants.Epsilon) return false;
+            if (Math.Abs(Width - 0f) < Constants.Epsilon) return false;
             if (_map?.Envelope == null) return false;
-            if (Math.Abs(_map.Envelope.Width - 0d) < Mapsui.Utilities.Constants.Epsilon) return false;
-            if (Math.Abs(_map.Envelope.Height - 0d) < Mapsui.Utilities.Constants.Epsilon) return false;
+            if (Math.Abs(_map.Envelope.Width - 0d) < Constants.Epsilon) return false;
+            if (Math.Abs(_map.Envelope.Height - 0d) < Constants.Epsilon) return false;
             if (_map.Envelope.GetCentroid() == null) return false;
 
             if (double.IsNaN(_map.Viewport.Resolution))
@@ -137,18 +141,18 @@ namespace Itinero.Android
             }
         }
 
-        void RunOnUiThread(Action method)
+        private void RunOnUiThread(Action method)
         {
-            ((Activity) Context).RunOnUiThread(new Java.Lang.Runnable(method));
+            ((Activity) Context).RunOnUiThread(new Runnable(method));
         }
 
-        void OnViewportInitialized()
+        private void OnViewportInitialized()
         {
             var handler = ViewportInitialized;
             handler?.Invoke(this, new EventArgs());
         }
 
-        void OnTouch(object sender, TouchEventArgs args)
+        private void OnTouch(object sender, TouchEventArgs args)
         {
             if (Map.Lock) return;
 
