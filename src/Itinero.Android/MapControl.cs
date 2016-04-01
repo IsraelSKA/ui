@@ -63,11 +63,11 @@ namespace Itinero.Android
         }
         void MapRefreshGraphics(object sender, EventArgs e)
         {
-            ((Activity) Context).RunOnUiThread(new Java.Lang.Runnable(() => 
+            RunOnUiThread(() => 
             { 
                 TryInitializeViewport();
                 _openTKSurface.RefreshGraphics();
-            }));
+            });
         }
 
         void MapPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -112,16 +112,21 @@ namespace Itinero.Android
             if (e.Cancelled || e.Error != null)
             {
                 //todo test code below:
-                //((Activity)Context).RunOnUiThread(new Runnable(Toast.MakeText(Context, GetErrorMessage(e), ToastLength.Short).Show));
+                RunOnUiThread(Toast.MakeText(Context, e.Error.Message, ToastLength.Short).Show);
             }
             else // no problems
             {
-                ((Activity)Context).RunOnUiThread(new Java.Lang.Runnable(() =>
+                RunOnUiThread(() =>
                 {
                     TryInitializeViewport();
                     _openTKSurface.RefreshGraphics();
-                }));
+                });
             }
+        }
+
+        void RunOnUiThread(Action method)
+        {
+            ((Activity)Context).RunOnUiThread(new Java.Lang.Runnable(method));
         }
 
         void OnViewportInitialized()
