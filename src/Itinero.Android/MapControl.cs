@@ -18,18 +18,15 @@ namespace Itinero.Android
     {
         public bool ShowCurrentLocation
         {
-            get
-            {
-                return _showCurrentLocation;
-            }
+            get { return _showCurrentLocation; }
             set
             {
-                _showCurrentLocation = value; 
+                _showCurrentLocation = value;
                 if (value) CurrentLocationLayer.StartListening();
                 else CurrentLocationLayer.StopListening();
             }
+        }
 
-        } 
         public CurrentLocationLayer CurrentLocationLayer { get; set; } = new CurrentLocationLayer();
 
         private bool _showCurrentLocation = true;
@@ -40,7 +37,7 @@ namespace Itinero.Android
         string _previousDataError = "";
 
         public event EventHandler<EventArgs> ViewportInitialized;
-        
+
         public MapControl(Context context, IAttributeSet attrs) : base(context, attrs)
         {
             _openTKSurface = new OpenTKSurface(Context, attrs);
@@ -55,10 +52,7 @@ namespace Itinero.Android
 
         public Map Map
         {
-            get
-            {
-                return _map;
-            }
+            get { return _map; }
             set
             {
                 if (_map != null)
@@ -109,7 +103,7 @@ namespace Itinero.Android
             if (_map.Envelope.GetCentroid() == null) return false;
 
             if (double.IsNaN(_map.Viewport.Resolution))
-                _map.Viewport.Resolution = _map.Envelope.Width / Width;
+                _map.Viewport.Resolution = _map.Envelope.Width/Width;
             if (double.IsNaN(_map.Viewport.Center.X) || double.IsNaN(_map.Viewport.Center.Y))
                 _map.Viewport.Center = _map.Envelope.GetCentroid();
             _map.Viewport.Width = Width;
@@ -136,7 +130,6 @@ namespace Itinero.Android
                     RunOnUiThread(() => Toast.MakeText(Context, message, ToastLength.Long).Show());
                     _previousDataError = e.Error.Message;
                 }
-
             }
             else // no problems
             {
@@ -146,7 +139,7 @@ namespace Itinero.Android
 
         void RunOnUiThread(Action method)
         {
-            ((Activity)Context).RunOnUiThread(new Java.Lang.Runnable(method));
+            ((Activity) Context).RunOnUiThread(new Java.Lang.Runnable(method));
         }
 
         void OnViewportInitialized()
@@ -163,15 +156,15 @@ namespace Itinero.Android
             if (mapAction == MapAction.RefreshGraphics)
             {
                 Map.Viewport.Transform(
-                    _touchHandler.Touch.X, _touchHandler.Touch.Y, 
-                    _touchHandler.PreviousTouch.X, _touchHandler.PreviousTouch.Y, 
+                    _touchHandler.Touch.X, _touchHandler.Touch.Y,
+                    _touchHandler.PreviousTouch.X, _touchHandler.PreviousTouch.Y,
                     _touchHandler.Scale);
 
                 Invalidate();
             }
             else if (mapAction == MapAction.RefreshData) Map.ViewChanged(true);
         }
-        
+
         protected override void OnDraw(Canvas canvas)
         {
             if (!_viewportInitialized) if (!TryInitializeViewport()) return;
