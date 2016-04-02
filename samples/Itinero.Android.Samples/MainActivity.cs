@@ -11,14 +11,14 @@ namespace Itinero.Android.Samples
         {
             base.OnCreate(bundle);
 
-            // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.Main);
 
             var mapControl = FindViewById<MapControl>(Resource.Id.mapcontrol);
 
             mapControl.Map.Layers.Add(OsmTilesSample.CreateLayer());
             mapControl.Map.Layers.Add(LineStringSample.CreateLayer());
-            mapControl.Map.Layers.Add(RandomPointsWithMarkerSample.CreateLayer(mapControl.Map.Envelope));
+            mapControl.Map.Layers.Add(CitiesLayerSample.CreateLayer());
+            
             mapControl.ShowCurrentLocation = true;
             
             mapControl.Map.Viewport.RenderResolutionMultiplier = 2;

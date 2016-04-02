@@ -34,6 +34,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Cities.cs" />
+    <Compile Include="CitiesLayerSample.cs" />
     <Compile Include="LineStringSample.cs" />
     <Compile Include="MbTilesSample.cs" />
     <Compile Include="OsmTilesSample.cs" />
@@ -71,6 +73,7 @@
     <Content Include="Data\test.mbtiles">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <EmbeddedResource Include="Data\cities.json" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />

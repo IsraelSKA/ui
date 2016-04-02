@@ -11,19 +11,20 @@ using Itinero.Core;
 using Java.Lang;
 using Mapsui;
 using Mapsui.Fetcher;
+using Mapsui.Geometries;
 using Mapsui.Layers;
 using Mapsui.Utilities;
 using Math = System.Math;
 
 namespace Itinero.Android
 {
+    
     public sealed class MapControl : FrameLayout
     {
         private readonly OpenTKSurface _openTKSurface;
         private readonly TouchHandler _touchHandler = new TouchHandler();
         private Map _map;
         private string _previousDataError = "";
-
         private bool _showCurrentLocation = true;
         private bool _viewportInitialized;
 
@@ -39,6 +40,8 @@ namespace Itinero.Android
             SetWillNotDraw(false);
         }
 
+        public BoundingBox MaxExtent { get; set; }
+        
         public bool ShowCurrentLocation
         {
             get { return _showCurrentLocation; }
@@ -163,6 +166,8 @@ namespace Itinero.Android
                     _touchHandler.Touch.X, _touchHandler.Touch.Y,
                     _touchHandler.PreviousTouch.X, _touchHandler.PreviousTouch.Y,
                     _touchHandler.Scale);
+                Map.Viewport.Resolution = ZoomHelper.ClipToExtremes(Map.Resolutions, Map.Viewport.Resolution);
+                Map.Viewport.RenderResolutionMultiplier = 1;
 
                 Invalidate();
             }
