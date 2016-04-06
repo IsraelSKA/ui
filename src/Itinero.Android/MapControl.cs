@@ -18,7 +18,12 @@ using Math = System.Math;
 
 namespace Itinero.Android
 {
-    
+    public enum RestrictedPanningMode
+    {
+        KeepCenterWithinMaxExtents,
+        KeepViewportWithinMaxExtents
+    }
+
     public sealed class MapControl : FrameLayout
     {
         private readonly OpenTKSurface _openTKSurface;
@@ -39,6 +44,9 @@ namespace Itinero.Android
 
             SetWillNotDraw(false);
         }
+
+        public RestrictedPanningMode RestrictedPanningMode { get; set; } =
+            RestrictedPanningMode.KeepViewportWithinMaxExtents;
 
         public BoundingBox MaxExtent { get; set; }
         
@@ -167,11 +175,35 @@ namespace Itinero.Android
                     _touchHandler.PreviousTouch.X, _touchHandler.PreviousTouch.Y,
                     _touchHandler.Scale);
                 Map.Viewport.Resolution = ZoomHelper.ClipToExtremes(Map.Resolutions, Map.Viewport.Resolution);
-                Map.Viewport.RenderResolutionMultiplier = 1;
+
+                RestrictPanAndZoom();
 
                 Invalidate();
             }
             else if (mapAction == MapAction.RefreshData) Map.ViewChanged(true);
+        }
+
+        private void RestrictPanAndZoom()
+        {
+            if (RestrictedPanningMode == RestrictedPanningMode.KeepCenterWithinMaxExtents)
+            {
+                // Don't use map envelope here.
+                if (Map.Viewport.Center.X < Map.Envelope.Left) Map.Viewport.Center.X = Map.Envelope.Left;
+                if (Map.Viewport.Center.X > Map.Envelope.Right) Map.Viewport.Center.X = Map.Envelope.Right;
+                if (Map.Viewport.Center.Y > Map.Envelope.Top) Map.Viewport.Center.Y = Map.Envelope.Top;
+                if (Map.Viewport.Center.Y < Map.Envelope.Bottom) Map.Viewport.Center.Y = Map.Envelope.Bottom;
+            }
+            if (RestrictedPanningMode == RestrictedPanningMode.KeepViewportWithinMaxExtents)
+            {
+                if (Map.Viewport.Extent.Left < Map.Envelope.Left)
+                    Map.Viewport.Center.X += Map.Envelope.Left - Map.Viewport.Extent.Left;
+                if (Map.Viewport.Extent.Right > Map.Envelope.Right)
+                    Map.Viewport.Center.X += Map.Envelope.Right - Map.Viewport.Extent.Right;
+                if (Map.Viewport.Extent.Top > Map.Envelope.Top)
+                    Map.Viewport.Center.Y += Map.Envelope.Top - Map.Viewport.Extent.Top;
+                if (Map.Viewport.Extent.Bottom < Map.Envelope.Bottom)
+                    Map.Viewport.Center.Y += Map.Envelope.Bottom - Map.Viewport.Extent.Bottom;
+            }
         }
 
         protected override void OnDraw(Canvas canvas)
