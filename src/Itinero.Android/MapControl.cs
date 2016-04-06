@@ -20,6 +20,7 @@ namespace Itinero.Android
 {
     public enum RestrictedPanningMode
     {
+        None,
         KeepCenterWithinMaxExtents,
         KeepViewportWithinMaxExtents
     }
@@ -45,8 +46,8 @@ namespace Itinero.Android
             SetWillNotDraw(false);
         }
 
-        public RestrictedPanningMode RestrictedPanningMode { get; set; } =
-            RestrictedPanningMode.KeepViewportWithinMaxExtents;
+        public RestrictedPanningMode RestrictedPanningMode { get; set; } 
+            = RestrictedPanningMode.KeepCenterWithinMaxExtents;
 
         public BoundingBox MaxExtent { get; set; }
         
