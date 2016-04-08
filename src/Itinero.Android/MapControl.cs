@@ -45,11 +45,11 @@ namespace Itinero.Android
 
             SetWillNotDraw(false);
         }
-
+        
         public RestrictedPanningMode RestrictedPanningMode { get; set; } 
-            = RestrictedPanningMode.KeepCenterWithinMaxExtents;
-
-        public BoundingBox MaxExtent { get; set; }
+            = RestrictedPanningMode.KeepViewportWithinMaxExtents;
+        
+        public BoundingBox CustomExtent { get; set; }
         
         public bool ShowCurrentLocation
         {
@@ -183,27 +183,31 @@ namespace Itinero.Android
             }
             else if (mapAction == MapAction.RefreshData) Map.ViewChanged(true);
         }
-
+        
         private void RestrictPanAndZoom()
         {
+            var maxExtent = CustomExtent ?? Map.Envelope;
+
             if (RestrictedPanningMode == RestrictedPanningMode.KeepCenterWithinMaxExtents)
             {
                 // Don't use map envelope here.
-                if (Map.Viewport.Center.X < Map.Envelope.Left) Map.Viewport.Center.X = Map.Envelope.Left;
-                if (Map.Viewport.Center.X > Map.Envelope.Right) Map.Viewport.Center.X = Map.Envelope.Right;
-                if (Map.Viewport.Center.Y > Map.Envelope.Top) Map.Viewport.Center.Y = Map.Envelope.Top;
-                if (Map.Viewport.Center.Y < Map.Envelope.Bottom) Map.Viewport.Center.Y = Map.Envelope.Bottom;
+
+                if (Map.Viewport.Center.X < maxExtent.Left)   Map.Viewport.Center.X = maxExtent.Left;
+                if (Map.Viewport.Center.X > maxExtent.Right)  Map.Viewport.Center.X = maxExtent.Right;
+                if (Map.Viewport.Center.Y > maxExtent.Top)    Map.Viewport.Center.Y = maxExtent.Top;
+                if (Map.Viewport.Center.Y < maxExtent.Bottom) Map.Viewport.Center.Y = maxExtent.Bottom;
             }
+
             if (RestrictedPanningMode == RestrictedPanningMode.KeepViewportWithinMaxExtents)
             {
-                if (Map.Viewport.Extent.Left < Map.Envelope.Left)
-                    Map.Viewport.Center.X += Map.Envelope.Left - Map.Viewport.Extent.Left;
-                if (Map.Viewport.Extent.Right > Map.Envelope.Right)
-                    Map.Viewport.Center.X += Map.Envelope.Right - Map.Viewport.Extent.Right;
-                if (Map.Viewport.Extent.Top > Map.Envelope.Top)
-                    Map.Viewport.Center.Y += Map.Envelope.Top - Map.Viewport.Extent.Top;
-                if (Map.Viewport.Extent.Bottom < Map.Envelope.Bottom)
-                    Map.Viewport.Center.Y += Map.Envelope.Bottom - Map.Viewport.Extent.Bottom;
+                if (Map.Viewport.Extent.Left < maxExtent .Left)
+                    Map.Viewport.Center.X += maxExtent .Left - Map.Viewport.Extent.Left;
+                if (Map.Viewport.Extent.Right > maxExtent .Right)
+                    Map.Viewport.Center.X += maxExtent .Right - Map.Viewport.Extent.Right;
+                if (Map.Viewport.Extent.Top > maxExtent .Top)
+                    Map.Viewport.Center.Y += maxExtent .Top - Map.Viewport.Extent.Top;
+                if (Map.Viewport.Extent.Bottom < maxExtent .Bottom)
+                    Map.Viewport.Center.Y += maxExtent .Bottom - Map.Viewport.Extent.Bottom;
             }
         }
 
@@ -218,7 +222,10 @@ namespace Itinero.Android
                 layers.Add(CurrentLocationLayer);
             }
 
-            _openTKSurface.RefreshGraphics(Map.Viewport, layers, Map.BackColor);
+            var copiedViewport = new Viewport(Map.Viewport) { // Copy so Viewport is not change during rendering to prevent flickering
+                Center = { X = Map.Viewport.Center.X, Y = Map.Viewport.Center.Y } // Next version of Mapsui will have deep Viewport copy constructor
+            };
+            _openTKSurface.RefreshGraphics(copiedViewport, layers, Map.BackColor);
         }
     }
 }
