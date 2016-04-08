@@ -28,13 +28,13 @@ namespace Itinero.Android
         /// <summary>
         /// Restricts the whole viewport within Map.Extents or within MaxExtents when set
         /// </summary>
-        KeepViewportWithinMaxExtents,
+        KeepViewportWithinExtents,
     }
 
     public enum RestrictedZoomMode
     {
         None,
-        KeepWithinMapResolutions,
+        KeepWithinResolutions,
     }
 
     public sealed class MapControl : FrameLayout
@@ -59,12 +59,21 @@ namespace Itinero.Android
         }
         
         public RestrictedPanMode RestrictedPanMode { get; set; } 
-            = RestrictedPanMode.KeepViewportWithinMaxExtents;
+            = RestrictedPanMode.KeepViewportWithinExtents;
 
         public RestrictedZoomMode RestrictedZoomMode { get; set; }
-            = RestrictedZoomMode.KeepWithinMapResolutions;
+            = RestrictedZoomMode.KeepWithinResolutions;
 
-        public BoundingBox CustomExtent { get; set; }
+        /// <summary>
+        /// Set this property in combination KeepCenterWithinExtents or KeepViewportWithinExtents.
+        /// If RestrictedPanExtent is not set Map.Extent will be used as restricted extent.
+        /// </summary>
+        public BoundingBox RestrictedPanExtent { get; set; }
+
+        /// <summary>
+        /// Resolutions to keep the Map.Resolution within. The order of the two resolutions does not matter.
+        /// </summary>
+        public Tuple<double, double> RestrictedZoomResolutions;
         
         public bool ShowCurrentLocation
         {
@@ -191,30 +200,39 @@ namespace Itinero.Android
                     _touchHandler.PreviousTouch.X, _touchHandler.PreviousTouch.Y,
                     _touchHandler.Scale);
                 
-                RestrictPan(Map.Viewport, RestrictedPanMode, CustomExtent ?? Map.Envelope);
-                Map.Viewport.Resolution = RestrictZoom(Map.Resolutions, Map.Viewport.Resolution, RestrictedZoomMode);
+                RestrictPan(Map.Viewport, RestrictedPanMode, RestrictedPanExtent ?? Map.Envelope);
+                Map.Viewport.Resolution = RestrictZoom(Map.Resolutions, RestrictedZoomResolutions, Map.Viewport.Resolution, RestrictedZoomMode);
                 
                 Invalidate();
             }
             else if (mapAction == MapAction.RefreshData) Map.ViewChanged(true);
         }
 
-        private static double RestrictZoom(IList<double> resolutions, double resolution, RestrictedZoomMode mode)
+        private static double RestrictZoom(IList<double> resolutions, Tuple<double, double> restrictedZoomResolutions, double resolution, RestrictedZoomMode mode)
         {
-            if (mode == RestrictedZoomMode.KeepWithinMapResolutions)
+            if (mode == RestrictedZoomMode.KeepWithinResolutions)
             {
-                if (resolutions == null || resolutions.Count == 0) return resolution;
+                double smallest;
+                double biggest;
+                if (restrictedZoomResolutions != null)
+                {
+                    smallest = Math.Min(restrictedZoomResolutions.Item1, restrictedZoomResolutions.Item2);
+                    biggest = Math.Max(restrictedZoomResolutions.Item1, restrictedZoomResolutions.Item2);
+                }
+                else
+                {
+                    if (resolutions.Count == 0) return resolution;
+                    smallest = resolutions[resolutions.Count - 1];
+                    biggest = resolutions[0];
+                }
 
-                //smaller than smallest
-                if (resolutions[resolutions.Count - 1] > resolution) return resolutions[resolutions.Count - 1];
-
-                //bigger than biggest
-                if (resolutions[0] < resolution) return resolutions[0];
+                if (smallest > resolution) return smallest;
+                if (biggest < resolution) return biggest;
             }
             return resolution;
         }
 
-        private static void RestrictPan(Viewport viewport, RestrictedPanMode mode, BoundingBox maxExtent)
+        private static void RestrictPan(IViewport viewport, RestrictedPanMode mode, BoundingBox maxExtent)
         {
             if (maxExtent == null) return; // Even the Map.Extent can be null if the extent of all layers is null
 
@@ -226,7 +244,7 @@ namespace Itinero.Android
                 if (viewport.Center.Y < maxExtent.Bottom) viewport.Center.Y = maxExtent.Bottom;
             }
 
-            if (mode == RestrictedPanMode.KeepViewportWithinMaxExtents)
+            if (mode == RestrictedPanMode.KeepViewportWithinExtents)
             {
                 // todo: do not keep within extent when viewport does not fit.
                 if (viewport.Extent.Left < maxExtent .Left)
