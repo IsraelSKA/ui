@@ -18,11 +18,23 @@ using Math = System.Math;
 
 namespace Itinero.Android
 {
-    public enum RestrictedPanningMode
+    public enum RestrictedPanMode
     {
         None,
-        KeepCenterWithinMaxExtents,
-        KeepViewportWithinMaxExtents
+        /// <summary>
+        /// Restricts center of the viewport within Map.Extents or within MaxExtents when set
+        /// </summary>
+        KeepCenterWithinExtents,
+        /// <summary>
+        /// Restricts the whole viewport within Map.Extents or within MaxExtents when set
+        /// </summary>
+        KeepViewportWithinMaxExtents,
+    }
+
+    public enum RestrictedZoomMode
+    {
+        None,
+        KeepWithinMapResolutions,
     }
 
     public sealed class MapControl : FrameLayout
@@ -46,9 +58,12 @@ namespace Itinero.Android
             SetWillNotDraw(false);
         }
         
-        public RestrictedPanningMode RestrictedPanningMode { get; set; } 
-            = RestrictedPanningMode.KeepViewportWithinMaxExtents;
-        
+        public RestrictedPanMode RestrictedPanMode { get; set; } 
+            = RestrictedPanMode.KeepViewportWithinMaxExtents;
+
+        public RestrictedZoomMode RestrictedZoomMode { get; set; }
+            = RestrictedZoomMode.KeepWithinMapResolutions;
+
         public BoundingBox CustomExtent { get; set; }
         
         public bool ShowCurrentLocation
@@ -175,28 +190,43 @@ namespace Itinero.Android
                     _touchHandler.Touch.X, _touchHandler.Touch.Y,
                     _touchHandler.PreviousTouch.X, _touchHandler.PreviousTouch.Y,
                     _touchHandler.Scale);
-                Map.Viewport.Resolution = ZoomHelper.ClipToExtremes(Map.Resolutions, Map.Viewport.Resolution);
-
-                RestrictPanAndZoom(Map.Viewport, RestrictedPanningMode, CustomExtent ?? Map.Envelope);
-
+                
+                RestrictPan(Map.Viewport, RestrictedPanMode, CustomExtent ?? Map.Envelope);
+                Map.Viewport.Resolution = RestrictZoom(Map.Resolutions, Map.Viewport.Resolution, RestrictedZoomMode);
+                
                 Invalidate();
             }
             else if (mapAction == MapAction.RefreshData) Map.ViewChanged(true);
         }
-        
-        private static void RestrictPanAndZoom(Viewport viewport, RestrictedPanningMode mode, BoundingBox maxExtent)
-        {
-            if (mode == RestrictedPanningMode.KeepCenterWithinMaxExtents)
-            {
-                // Don't use map envelope here.
 
+        private static double RestrictZoom(IList<double> resolutions, double resolution, RestrictedZoomMode mode)
+        {
+            if (mode == RestrictedZoomMode.KeepWithinMapResolutions)
+            {
+                if (resolutions == null || resolutions.Count == 0) return resolution;
+
+                //smaller than smallest
+                if (resolutions[resolutions.Count - 1] > resolution) return resolutions[resolutions.Count - 1];
+
+                //bigger than biggest
+                if (resolutions[0] < resolution) return resolutions[0];
+            }
+            return resolution;
+        }
+
+        private static void RestrictPan(Viewport viewport, RestrictedPanMode mode, BoundingBox maxExtent)
+        {
+            if (maxExtent == null) return; // Even the Map.Extent can be null if the extent of all layers is null
+
+            if (mode == RestrictedPanMode.KeepCenterWithinExtents)
+            {
                 if (viewport.Center.X < maxExtent.Left)   viewport.Center.X = maxExtent.Left;
                 if (viewport.Center.X > maxExtent.Right)  viewport.Center.X = maxExtent.Right;
                 if (viewport.Center.Y > maxExtent.Top)    viewport.Center.Y = maxExtent.Top;
                 if (viewport.Center.Y < maxExtent.Bottom) viewport.Center.Y = maxExtent.Bottom;
             }
 
-            if (mode == RestrictedPanningMode.KeepViewportWithinMaxExtents)
+            if (mode == RestrictedPanMode.KeepViewportWithinMaxExtents)
             {
                 if (viewport.Extent.Left < maxExtent .Left)
                     viewport.Center.X += maxExtent .Left - viewport.Extent.Left;
