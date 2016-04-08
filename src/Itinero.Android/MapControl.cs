@@ -140,7 +140,7 @@ namespace Itinero.Android
             }
             else if (e.Error != null)
             {
-                if (_previousDataError != e.Error.Message) // Don't repeat the same failed tile request 
+                if (_previousDataError != e.Error.Message) // Don't repeat the same error messages. Can occur for many tile requests
                 {
                     var message = $"Error during data fetch: {e.Error.Message}";
                     RunOnUiThread(() => Toast.MakeText(Context, message, ToastLength.Long).Show());
@@ -177,37 +177,35 @@ namespace Itinero.Android
                     _touchHandler.Scale);
                 Map.Viewport.Resolution = ZoomHelper.ClipToExtremes(Map.Resolutions, Map.Viewport.Resolution);
 
-                RestrictPanAndZoom();
+                RestrictPanAndZoom(Map.Viewport, RestrictedPanningMode, CustomExtent ?? Map.Envelope);
 
                 Invalidate();
             }
             else if (mapAction == MapAction.RefreshData) Map.ViewChanged(true);
         }
         
-        private void RestrictPanAndZoom()
+        private static void RestrictPanAndZoom(Viewport viewport, RestrictedPanningMode mode, BoundingBox maxExtent)
         {
-            var maxExtent = CustomExtent ?? Map.Envelope;
-
-            if (RestrictedPanningMode == RestrictedPanningMode.KeepCenterWithinMaxExtents)
+            if (mode == RestrictedPanningMode.KeepCenterWithinMaxExtents)
             {
                 // Don't use map envelope here.
 
-                if (Map.Viewport.Center.X < maxExtent.Left)   Map.Viewport.Center.X = maxExtent.Left;
-                if (Map.Viewport.Center.X > maxExtent.Right)  Map.Viewport.Center.X = maxExtent.Right;
-                if (Map.Viewport.Center.Y > maxExtent.Top)    Map.Viewport.Center.Y = maxExtent.Top;
-                if (Map.Viewport.Center.Y < maxExtent.Bottom) Map.Viewport.Center.Y = maxExtent.Bottom;
+                if (viewport.Center.X < maxExtent.Left)   viewport.Center.X = maxExtent.Left;
+                if (viewport.Center.X > maxExtent.Right)  viewport.Center.X = maxExtent.Right;
+                if (viewport.Center.Y > maxExtent.Top)    viewport.Center.Y = maxExtent.Top;
+                if (viewport.Center.Y < maxExtent.Bottom) viewport.Center.Y = maxExtent.Bottom;
             }
 
-            if (RestrictedPanningMode == RestrictedPanningMode.KeepViewportWithinMaxExtents)
+            if (mode == RestrictedPanningMode.KeepViewportWithinMaxExtents)
             {
-                if (Map.Viewport.Extent.Left < maxExtent .Left)
-                    Map.Viewport.Center.X += maxExtent .Left - Map.Viewport.Extent.Left;
-                if (Map.Viewport.Extent.Right > maxExtent .Right)
-                    Map.Viewport.Center.X += maxExtent .Right - Map.Viewport.Extent.Right;
-                if (Map.Viewport.Extent.Top > maxExtent .Top)
-                    Map.Viewport.Center.Y += maxExtent .Top - Map.Viewport.Extent.Top;
-                if (Map.Viewport.Extent.Bottom < maxExtent .Bottom)
-                    Map.Viewport.Center.Y += maxExtent .Bottom - Map.Viewport.Extent.Bottom;
+                if (viewport.Extent.Left < maxExtent .Left)
+                    viewport.Center.X += maxExtent .Left - viewport.Extent.Left;
+                if (viewport.Extent.Right > maxExtent .Right)
+                    viewport.Center.X += maxExtent .Right - viewport.Extent.Right;
+                if (viewport.Extent.Top > maxExtent .Top)
+                    viewport.Center.Y += maxExtent .Top - viewport.Extent.Top;
+                if (viewport.Extent.Bottom < maxExtent .Bottom)
+                    viewport.Center.Y += maxExtent .Bottom - viewport.Extent.Bottom;
             }
         }
 
