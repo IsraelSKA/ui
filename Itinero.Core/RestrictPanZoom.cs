@@ -1,10 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Mapsui;
 using Mapsui.Geometries;
 
 namespace Itinero.Core
 {
+    public class PairOfDoubles : Tuple<double, double>
+    {
+        public PairOfDoubles(double item1, double item2) : base(item1, item2)
+        {
+        }
+    }
+
     public enum RestrictedPanMode
     {
         None,
@@ -41,25 +49,23 @@ namespace Itinero.Core
         /// <summary>
         /// Resolutions to keep the Map.Resolution within. The order of the two resolutions does not matter.
         /// </summary>
-        public Tuple<double, double> Resolutions;
+        public PairOfDoubles Resolutions { get; set; }
 
-        public static double RestrictZoom(IList<double> resolutions, Tuple<double, double> restrictedZoomResolutions, double resolution, RestrictedZoomMode mode)
+        public static PairOfDoubles ToPairOfResolutions(PairOfDoubles pairOfResolutions, IList<double> resolutions)
         {
-            if (mode == RestrictedZoomMode.KeepWithinResolutions)
+            if (pairOfResolutions != null) return pairOfResolutions;
+            if (resolutions == null || resolutions.Count == 0) return null;
+            return new PairOfDoubles(resolutions.First(), resolutions.Last());
+        }
+
+        public double RestrictZoom(PairOfDoubles pairOfResolutions, double resolution)
+        {
+            if (ZoomMode == RestrictedZoomMode.KeepWithinResolutions)
             {
-                double smallest;
-                double biggest;
-                if (restrictedZoomResolutions != null)
-                {
-                    smallest = Math.Min(restrictedZoomResolutions.Item1, restrictedZoomResolutions.Item2);
-                    biggest = Math.Max(restrictedZoomResolutions.Item1, restrictedZoomResolutions.Item2);
-                }
-                else
-                {
-                    if (resolutions.Count == 0) return resolution;
-                    smallest = resolutions[resolutions.Count - 1];
-                    biggest = resolutions[0];
-                }
+                if (pairOfResolutions == null) return resolution;
+
+                var smallest = Math.Min(pairOfResolutions.Item1, pairOfResolutions.Item2);
+                var biggest = Math.Max(pairOfResolutions.Item1, pairOfResolutions.Item2);
 
                 if (smallest > resolution) return smallest;
                 if (biggest < resolution) return biggest;
@@ -67,11 +73,11 @@ namespace Itinero.Core
             return resolution;
         }
 
-        public static void RestrictPan(IViewport viewport, RestrictedPanMode mode, BoundingBox maxExtent)
+        public void RestrictPan(IViewport viewport, BoundingBox maxExtent)
         {
             if (maxExtent == null) return; // Even the Map.Extent can be null if the extent of all layers is null
 
-            if (mode == RestrictedPanMode.KeepCenterWithinExtents)
+            if (PanMode == RestrictedPanMode.KeepCenterWithinExtents)
             {
                 if (viewport.Center.X < maxExtent.Left) viewport.Center.X = maxExtent.Left;
                 if (viewport.Center.X > maxExtent.Right) viewport.Center.X = maxExtent.Right;
@@ -79,9 +85,10 @@ namespace Itinero.Core
                 if (viewport.Center.Y < maxExtent.Bottom) viewport.Center.Y = maxExtent.Bottom;
             }
 
-            if (mode == RestrictedPanMode.KeepViewportWithinExtents)
+            if (PanMode == RestrictedPanMode.KeepViewportWithinExtents)
             {
                 // todo: do not keep within extent when viewport does not fit.
+
                 if (viewport.Extent.Left < maxExtent.Left)
                     viewport.Center.X += maxExtent.Left - viewport.Extent.Left;
                 if (viewport.Extent.Right > maxExtent.Right)

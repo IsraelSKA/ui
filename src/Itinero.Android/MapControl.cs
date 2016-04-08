@@ -163,9 +163,10 @@ namespace Itinero.Android
                     _touchHandler.Touch.X, _touchHandler.Touch.Y,
                     _touchHandler.PreviousTouch.X, _touchHandler.PreviousTouch.Y,
                     _touchHandler.Scale);
-                
-                RestrictPanZoom.RestrictPan(Map.Viewport, Restrict.PanMode, Restrict.Extent ?? Map.Envelope);
-                Map.Viewport.Resolution = RestrictPanZoom.RestrictZoom(Map.Resolutions, Restrict.Resolutions, Map.Viewport.Resolution, Restrict.ZoomMode);
+
+                Restrict.RestrictPan(Map.Viewport, Restrict.Extent ?? Map.Envelope);
+                var resolutions = RestrictPanZoom.ToPairOfResolutions(Restrict.Resolutions, Map.Resolutions);
+                Map.Viewport.Resolution = Restrict.RestrictZoom(resolutions, Map.Viewport.Resolution);
                 
                 Invalidate();
             }
