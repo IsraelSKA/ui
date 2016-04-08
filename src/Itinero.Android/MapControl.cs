@@ -228,6 +228,7 @@ namespace Itinero.Android
 
             if (mode == RestrictedPanMode.KeepViewportWithinMaxExtents)
             {
+                // todo: do not keep within extent when viewport does not fit.
                 if (viewport.Extent.Left < maxExtent .Left)
                     viewport.Center.X += maxExtent .Left - viewport.Extent.Left;
                 if (viewport.Extent.Right > maxExtent .Right)
