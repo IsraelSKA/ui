@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -14,12 +15,15 @@ namespace Itinero.Code.Samples
     {
         public static MemoryLayer CreateLayer()
         {
+            var imageStream = GetResourceStream(typeof(RandomPointsWithMarkerSample), 
+                "Itinero.Code.Samples.Images.marker.png");
+
             return new MemoryLayer
             {
                 DataSource = new MemoryProvider(GetFeatures()),
                 Style = new SymbolStyle
                 {
-                    BitmapId = BitmapRegistry.Instance.Register(GetImageStream()),
+                    BitmapId = BitmapRegistry.Instance.Register(imageStream),
                     SymbolOffset = new Offset {  X = 0, Y = 40 }
                 }
             };
@@ -27,17 +31,12 @@ namespace Itinero.Code.Samples
 
         private static IEnumerable<Geoname> GetCities()
         {
-            using (var reader = new StreamReader(GetResourceStream()))
+            var jsonStream = GetResourceStream(typeof(CitiesLayerSample), "Itinero.Code.Samples.Data.cities.json");
+
+            using (var reader = new StreamReader(jsonStream))
             {
                 return JsonConvert.DeserializeObject<Rootobject>(reader.ReadToEnd()).geonames;
             }
-        }
-        
-        private static Stream GetResourceStream()
-        {
-            const string embeddedResourcePath = "Itinero.Code.Samples.Data.cities.json";
-            var assembly = typeof(CitiesLayerSample).GetTypeInfo().Assembly;
-            return assembly.GetManifestResourceStream(embeddedResourcePath);
         }
         
         public static IEnumerable<IFeature> GetFeatures()
@@ -47,10 +46,9 @@ namespace Itinero.Code.Samples
              });
         }
 
-        private static Stream GetImageStream()
+        private static Stream GetResourceStream(Type t, string embeddedResourcePath)
         {
-            var embeddedResourcePath = "Itinero.Code.Samples.Images.marker.png";
-            var assembly = typeof(RandomPointsWithMarkerSample).GetTypeInfo().Assembly;
+            var assembly = t.GetTypeInfo().Assembly;
             return assembly.GetManifestResourceStream(embeddedResourcePath);
         }
     }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Mapsui;
 using Mapsui.Geometries;
 
@@ -34,7 +35,7 @@ namespace Itinero.Core
     {
         public RestrictPanMode PanMode { get; set; } = RestrictPanMode.KeepViewportWithinExtents;
 
-        public RestrictZoomMode ZoomMode { get; set; } = RestrictZoomMode.KeepWithinResolutionsAndAlwaysFillViewport;
+        public RestrictZoomMode ZoomMode { get; set; } = RestrictZoomMode.KeepWithinResolutions;
 
         /// <summary>
         /// Set this property in combination KeepCenterWithinExtents or KeepViewportWithinExtents.
@@ -51,6 +52,7 @@ namespace Itinero.Core
         private static PairOfDoubles GetExtremes(IList<double> resolutions)
         {
             if (resolutions == null || resolutions.Count == 0) return null;
+            resolutions = resolutions.OrderByDescending(r => r).ToList();
             return new PairOfDoubles(resolutions[0], resolutions[resolutions.Count - 1]);
         }
 

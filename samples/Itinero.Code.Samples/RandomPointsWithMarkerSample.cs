@@ -9,7 +9,7 @@ using Mapsui.Styles;
 
 namespace Itinero.Code.Samples
 {
-    public class RandomPointsWithMarkerSample
+    public static class RandomPointsWithMarkerSample
     {
         private static readonly Random Random = new Random(0);
 

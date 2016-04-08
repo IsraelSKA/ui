@@ -70,10 +70,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Data\test.mbtiles">
+    <EmbeddedResource Include="Data\test.mbtiles">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <EmbeddedResource Include="Data\cities.json" />
+    </EmbeddedResource>
+    <EmbeddedResource Include="Data\cities.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
