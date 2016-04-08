@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using Mapsui;
 using Mapsui.Geometries;
 
@@ -28,15 +27,14 @@ namespace Itinero.Core
     {
         None,
         KeepWithinResolutions,
+        KeepWithinResolutionsAndAlwaysFillViewport
     }
 
     public class RestrictPanZoom
     {
-        public RestrictPanMode PanMode { get; set; }
-            = RestrictPanMode.KeepViewportWithinExtents;
+        public RestrictPanMode PanMode { get; set; } = RestrictPanMode.KeepViewportWithinExtents;
 
-        public RestrictZoomMode ZoomMode { get; set; }
-            = RestrictZoomMode.KeepWithinResolutions;
+        public RestrictZoomMode ZoomMode { get; set; } = RestrictZoomMode.KeepWithinResolutionsAndAlwaysFillViewport;
 
         /// <summary>
         /// Set this property in combination KeepCenterWithinExtents or KeepViewportWithinExtents.
@@ -45,46 +43,58 @@ namespace Itinero.Core
         public BoundingBox Extent { get; set; }
 
         /// <summary>
-        /// Resolutions to keep the Map.Resolution within. The order of the two resolutions does not matter.
+        /// Pair of the extreme resolution (biggest and smalles). The resolution is kept between these.
+        /// The order of the two extreme resolutions does not matter.
         /// </summary>
-        public PairOfDoubles Resolutions { get; set; }
+        public PairOfDoubles ResolutionExtremes { get; set; }
 
-        private static PairOfDoubles ResolutionsToPair(IList<double> resolutions)
+        private static PairOfDoubles GetExtremes(IList<double> resolutions)
         {
             if (resolutions == null || resolutions.Count == 0) return null;
-            return new PairOfDoubles(resolutions.First(), resolutions.Last());
+            return new PairOfDoubles(resolutions[0], resolutions[resolutions.Count - 1]);
         }
 
-        public double RestrictZoom(IList<double> resolutions, double resolution)
+        public double RestrictZoom(IViewport viewport, IList<double> resolutions, BoundingBox mapEnvelope)
         {
+            if (ZoomMode == RestrictZoomMode.None) return viewport.Resolution;
+
+            var resolutionExtremes = ResolutionExtremes ?? GetExtremes(resolutions);
+            if (resolutionExtremes == null) return viewport.Resolution;
+
             if (ZoomMode == RestrictZoomMode.KeepWithinResolutions)
             {
-                var pairOfResolutions = Resolutions ?? ResolutionsToPair(resolutions);
-                if (pairOfResolutions == null) return resolution;
+                var smallest = Math.Min(resolutionExtremes.Item1, resolutionExtremes.Item2);
+                if (smallest > viewport.Resolution) return smallest;
 
-                var smallest = Math.Min(pairOfResolutions.Item1, pairOfResolutions.Item2);
-                var biggest = Math.Max(pairOfResolutions.Item1, pairOfResolutions.Item2);
-
-                if (smallest > resolution) return smallest;
-                if (biggest < resolution) return biggest;
+                var biggest = Math.Max(resolutionExtremes.Item1, resolutionExtremes.Item2);
+                if (biggest < viewport.Resolution) return biggest;
             }
-            return resolution;
+            else if (ZoomMode == RestrictZoomMode.KeepWithinResolutionsAndAlwaysFillViewport)
+            {
+                
+                var smallest = Math.Min(resolutionExtremes.Item1, resolutionExtremes.Item2);
+                if (smallest > viewport.Resolution) return smallest;
+
+                var viewportFillingResolution = CalculateResolutionAtWhichMapFillsViewport(viewport, mapEnvelope);
+
+                var biggest = Math.Max(resolutionExtremes.Item1, resolutionExtremes.Item2);
+
+                biggest = Math.Min(biggest, viewportFillingResolution);
+
+                if (biggest < viewport.Resolution) return biggest;
+            }
+            return viewport.Resolution;
         }
 
-        public bool MapWidthSpansViewport(IViewport viewport, double width)
+        private double CalculateResolutionAtWhichMapFillsViewport(IViewport viewport, BoundingBox mapEnvelope)
         {
-            return viewport.Width < width / viewport.Resolution;
+            return Math.Min(mapEnvelope.Width / viewport.Width, mapEnvelope.Height / viewport.Height);
         }
 
-        public bool MapHeightSpansViewport(IViewport viewport, double height)
+        public void RestrictPan(IViewport viewport, BoundingBox mapEnvelope)
         {
-            return viewport.Height < height / viewport.Resolution;
-        }
-
-        public void RestrictPan(IViewport viewport, BoundingBox mapExtent)
-        {
-            var maxExtent = Extent ?? mapExtent;
-            if (maxExtent == null) return; // Even the Map.Extent can be null if the extent of all layers is null
+            var maxExtent = Extent ?? mapEnvelope;
+            if (maxExtent == null) return; // Can be null because both Extent and Map.Extent. The Map.Extent can be null if the extent of all layers is null
 
             if (PanMode == RestrictPanMode.KeepCenterWithinExtents)
             {
@@ -93,17 +103,16 @@ namespace Itinero.Core
                 if (viewport.Center.Y > maxExtent.Top) viewport.Center.Y = maxExtent.Top;
                 if (viewport.Center.Y < maxExtent.Bottom) viewport.Center.Y = maxExtent.Bottom;
             }
-
-            if (PanMode == RestrictPanMode.KeepViewportWithinExtents)
+            else if (PanMode == RestrictPanMode.KeepViewportWithinExtents)
             {
-                if (MapWidthSpansViewport(viewport, maxExtent.Width))
+                if (MapWidthSpansViewport(maxExtent.Width, viewport.Width, viewport.Resolution)) // if it does't fit don't restrict
                 {
                     if (viewport.Extent.Left < maxExtent.Left)
                         viewport.Center.X += maxExtent.Left - viewport.Extent.Left;
                     if (viewport.Extent.Right > maxExtent.Right)
                         viewport.Center.X += maxExtent.Right - viewport.Extent.Right;
                 }
-                if (MapHeightSpansViewport(viewport, maxExtent.Height))
+                if (MapHeightSpansViewport(maxExtent.Height, viewport.Height, viewport.Resolution)) // if it does't fit don't restrict
                 {
                     if (viewport.Extent.Top > maxExtent.Top)
                         viewport.Center.Y += maxExtent.Top - viewport.Extent.Top;
@@ -111,6 +120,18 @@ namespace Itinero.Core
                         viewport.Center.Y += maxExtent.Bottom - viewport.Extent.Bottom;
                 }
             }
+        }
+
+        private static bool MapWidthSpansViewport(double extentWidth, double viewportWidth, double resolution)
+        {
+            var mapWidth = extentWidth / resolution; // in screen units
+            return viewportWidth <= mapWidth;
+        }
+
+        private static bool MapHeightSpansViewport(double extentHeight, double viewportHeight, double resolution)
+        {
+            var mapHeight = extentHeight / resolution; // in screen units
+            return viewportHeight <= mapHeight;
         }
     }
 }

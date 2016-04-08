@@ -38,7 +38,15 @@ namespace Itinero.Android
 
             SetWillNotDraw(false);
         }
-        
+
+        protected override void OnSizeChanged(int w, int h, int oldw, int oldh)
+        {
+            base.OnSizeChanged(w, h, oldw, oldh);
+            Map.Viewport.Width = w;
+            Map.Viewport.Height = h;
+            Restrict.RestrictZoom(Map.Viewport, Map.Resolutions, Map.Envelope);
+        }
+
         public bool ShowCurrentLocation
         {
             get { return _showCurrentLocation; }
@@ -105,14 +113,17 @@ namespace Itinero.Android
             if (Math.Abs(_map.Envelope.Width - 0d) < Constants.Epsilon) return false;
             if (Math.Abs(_map.Envelope.Height - 0d) < Constants.Epsilon) return false;
             if (_map.Envelope.GetCentroid() == null) return false;
-
+            
             if (double.IsNaN(_map.Viewport.Resolution))
-                _map.Viewport.Resolution = _map.Envelope.Width/Width;
+                _map.Viewport.Resolution = Math.Max(_map.Envelope.Width / Width, _map.Envelope.Height / Height);
             if (double.IsNaN(_map.Viewport.Center.X) || double.IsNaN(_map.Viewport.Center.Y))
                 _map.Viewport.Center = _map.Envelope.GetCentroid();
+
             _map.Viewport.Width = Width;
             _map.Viewport.Height = Height;
             if (Width >= 1080 && Height >= 1080) _map.Viewport.RenderResolutionMultiplier = 2;
+            if (Restrict.ZoomMode == RestrictZoomMode.KeepWithinResolutionsAndAlwaysFillViewport)
+                Map.NavigateTo(Map.Envelope, ScaleMethod.Fill);
 
             _viewportInitialized = true;
             OnViewportInitialized();
@@ -164,9 +175,9 @@ namespace Itinero.Android
                     _touchHandler.PreviousTouch.X, _touchHandler.PreviousTouch.Y,
                     _touchHandler.Scale);
 
+                Map.Viewport.Resolution = Restrict.RestrictZoom(Map.Viewport, Map.Resolutions, Map.Envelope);
                 Restrict.RestrictPan(Map.Viewport, Map.Envelope);
-                Map.Viewport.Resolution = Restrict.RestrictZoom(Map.Resolutions, Map.Viewport.Resolution);
-                
+
                 Invalidate();
             }
             else if (mapAction == MapAction.RefreshData) Map.ViewChanged(true);
