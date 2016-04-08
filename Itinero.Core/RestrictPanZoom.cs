@@ -71,16 +71,12 @@ namespace Itinero.Core
             }
             else if (ZoomMode == RestrictZoomMode.KeepWithinResolutionsAndAlwaysFillViewport)
             {
-                
                 var smallest = Math.Min(resolutionExtremes.Item1, resolutionExtremes.Item2);
                 if (smallest > viewport.Resolution) return smallest;
 
-                var viewportFillingResolution = CalculateResolutionAtWhichMapFillsViewport(viewport, mapEnvelope);
-
                 var biggest = Math.Max(resolutionExtremes.Item1, resolutionExtremes.Item2);
-
+                var viewportFillingResolution = CalculateResolutionAtWhichMapFillsViewport(viewport, mapEnvelope);
                 biggest = Math.Min(biggest, viewportFillingResolution);
-
                 if (biggest < viewport.Resolution) return biggest;
             }
             return viewport.Resolution;
