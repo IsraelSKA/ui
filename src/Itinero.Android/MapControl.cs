@@ -164,17 +164,14 @@ namespace Itinero.Android
                     _touchHandler.PreviousTouch.X, _touchHandler.PreviousTouch.Y,
                     _touchHandler.Scale);
 
-                Restrict.RestrictPan(Map.Viewport, Restrict.Extent ?? Map.Envelope);
-                var resolutions = RestrictPanZoom.ToPairOfResolutions(Restrict.Resolutions, Map.Resolutions);
-                Map.Viewport.Resolution = Restrict.RestrictZoom(resolutions, Map.Viewport.Resolution);
+                Restrict.RestrictPan(Map.Viewport, Map.Envelope);
+                Map.Viewport.Resolution = Restrict.RestrictZoom(Map.Resolutions, Map.Viewport.Resolution);
                 
                 Invalidate();
             }
             else if (mapAction == MapAction.RefreshData) Map.ViewChanged(true);
         }
-
-   
-
+        
         protected override void OnDraw(Canvas canvas)
         {
             if (!_viewportInitialized) if (!TryInitializeViewport()) return;
