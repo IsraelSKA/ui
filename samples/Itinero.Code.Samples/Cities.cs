@@ -1,6 +1,7 @@
-﻿namespace Itinero.Code.Samples
-{
+﻿// ReSharper disable All
 
+namespace Itinero.Code.Samples
+{
     public class Rootobject
     {
         public Geoname[] geonames { get; set; }
@@ -21,4 +22,5 @@
         public int population { get; set; }
         public string fcode { get; set; }
     }
+
 }
