@@ -6,7 +6,6 @@ using Itinero.Code.Samples;
 namespace Itinero.Android.Samples
 {   static class Setup
     {
-
         public static string Folder => Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
 
         public static string DatabasePath => Path.Combine(Folder, "test.mbtiles");
@@ -15,7 +14,7 @@ namespace Itinero.Android.Samples
         {
             if (!File.Exists(DatabasePath))
             {
-                var stream = GetResourceStream(typeof(MbTilesSample), "Itinero.Code.Samples.Data.test.mbtiles");
+                var stream = LoadEmbeddedResource("Itinero.Code.Samples.Data.test.mbtiles", typeof(MbTilesSample));
                 Directory.CreateDirectory(Folder);
                 var fileStream = File.Create(DatabasePath);
                 ReadWriteStream(stream, fileStream);
@@ -37,9 +36,9 @@ namespace Itinero.Android.Samples
             writeStream.Close();
         }
 
-        private static Stream GetResourceStream(Type t, string embeddedResourcePath)
+        private static Stream LoadEmbeddedResource(string embeddedResourcePath, Type type)
         {
-            var assembly = t.GetTypeInfo().Assembly;
+            var assembly = type.GetTypeInfo().Assembly;
             return assembly.GetManifestResourceStream(embeddedResourcePath);
         }
     }

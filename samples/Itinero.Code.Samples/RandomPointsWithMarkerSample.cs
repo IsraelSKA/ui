@@ -15,18 +15,18 @@ namespace Itinero.Code.Samples
 
         public static ILayer CreateLayer(BoundingBox envelope, int count = 25)
         {
+            var stream = LoadEmbeddedResource("Itinero.Code.Samples.Images.marker.png", typeof(RandomPointsWithMarkerSample));
             return new Layer("Random points")
             {
                 DataSource = new MemoryProvider(GenerateRandomPoints(envelope, count)),
                 // todo use correct offset for bitmap (it points to center bottom)
-                Style = new SymbolStyle { BitmapId = BitmapRegistry.Instance.Register(GetImageStream()) }
+                Style = new SymbolStyle { BitmapId = BitmapRegistry.Instance.Register(stream) }
             };
         }
-        
-        private static Stream GetImageStream()
+
+        private static Stream LoadEmbeddedResource(string embeddedResourcePath, Type type)
         {
-            var embeddedResourcePath = "Itinero.Code.Samples.Images.marker.png";
-            var assembly = typeof(RandomPointsWithMarkerSample).GetTypeInfo().Assembly;
+            var assembly = type.GetTypeInfo().Assembly;
             return assembly.GetManifestResourceStream(embeddedResourcePath);
         }
 

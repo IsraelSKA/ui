@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using Mapsui.Fetcher;
@@ -84,13 +85,13 @@ namespace Itinero.Core
 
         public static Style CreateBitmapStyle()
         {
-            return new SymbolStyle { BitmapId = BitmapRegistry.Instance.Register(GetImageStream()) };
+            var stream = LoadEmbeddedResource("Itinero.Core.Images.current_location.png", typeof(CurrentLocationLayer));
+            return new SymbolStyle { BitmapId = BitmapRegistry.Instance.Register(stream) };
         }
-
-        private static Stream GetImageStream()
+        
+        private static Stream LoadEmbeddedResource(string embeddedResourcePath, Type type)
         {
-            var embeddedResourcePath = "Itinero.Core.Images.current_location.png";
-            var assembly = typeof(CurrentLocationLayer).GetTypeInfo().Assembly;
+            var assembly = type.GetTypeInfo().Assembly;
             return assembly.GetManifestResourceStream(embeddedResourcePath);
         }
     }

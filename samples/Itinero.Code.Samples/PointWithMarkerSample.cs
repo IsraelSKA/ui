@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Reflection;
 using Mapsui.Geometries;
 using Mapsui.Layers;
@@ -26,13 +27,13 @@ namespace Itinero.Code.Samples
 
         public static Style CreateBitmapStyle()
         {
-            return new SymbolStyle {BitmapId = BitmapRegistry.Instance.Register(GetImageStream()) };
+            var stream = LoadEmbeddedResource("Itinero.Code.Samples.Images.loc.png", typeof (PointWithMarkerSample));
+            return new SymbolStyle {BitmapId = BitmapRegistry.Instance.Register(stream) };
         }
 
-        private static Stream GetImageStream()
+        private static Stream LoadEmbeddedResource(string embeddedResourcePath, Type type)
         {
-            var embeddedResourcePath = "Itinero.Code.Samples.Images.loc.png";
-            var assembly = typeof (PointWithMarkerSample).GetTypeInfo().Assembly;
+            var assembly = type.GetTypeInfo().Assembly;
             return assembly.GetManifestResourceStream(embeddedResourcePath);
         }
     }

@@ -15,8 +15,7 @@ namespace Itinero.Code.Samples
     {
         public static MemoryLayer CreateLayer()
         {
-            var imageStream = GetResourceStream(typeof(RandomPointsWithMarkerSample), 
-                "Itinero.Code.Samples.Images.marker.png");
+            var imageStream = LoadEmbeddedResource("Itinero.Code.Samples.Images.marker.png", typeof(RandomPointsWithMarkerSample));
 
             return new MemoryLayer
             {
@@ -31,7 +30,7 @@ namespace Itinero.Code.Samples
 
         private static IEnumerable<Geoname> GetCities()
         {
-            var jsonStream = GetResourceStream(typeof(CitiesLayerSample), "Itinero.Code.Samples.Data.cities.json");
+            var jsonStream = LoadEmbeddedResource("Itinero.Code.Samples.Data.cities.json", typeof(CitiesLayerSample));
 
             using (var reader = new StreamReader(jsonStream))
             {
@@ -46,9 +45,9 @@ namespace Itinero.Code.Samples
              });
         }
 
-        private static Stream GetResourceStream(Type t, string embeddedResourcePath)
+        private static Stream LoadEmbeddedResource(string embeddedResourcePath, Type type)
         {
-            var assembly = t.GetTypeInfo().Assembly;
+            var assembly = type.GetTypeInfo().Assembly;
             return assembly.GetManifestResourceStream(embeddedResourcePath);
         }
     }
