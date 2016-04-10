@@ -35,7 +35,7 @@ namespace Itinero.Core
     {
         public RestrictPanMode PanMode { get; set; } = RestrictPanMode.KeepViewportWithinExtents;
 
-        public RestrictZoomMode ZoomMode { get; set; } = RestrictZoomMode.KeepWithinResolutions;
+        public RestrictZoomMode ZoomMode { get; set; } = RestrictZoomMode.KeepWithinResolutionsAndAlwaysFillViewport;
 
         /// <summary>
         /// Set this property in combination KeepCenterWithinExtents or KeepViewportWithinExtents.
@@ -53,7 +53,9 @@ namespace Itinero.Core
         {
             if (resolutions == null || resolutions.Count == 0) return null;
             resolutions = resolutions.OrderByDescending(r => r).ToList();
-            return new PairOfDoubles(resolutions[0], resolutions[resolutions.Count - 1]);
+            var mostZoomedOut = resolutions[0];
+            var mostZoomedIn = resolutions[resolutions.Count - 1]/2; // divide by two to allow one extra level zoom-in
+            return new PairOfDoubles(mostZoomedOut, mostZoomedIn);
         }
 
         public double RestrictZoom(IViewport viewport, IList<double> resolutions, BoundingBox mapEnvelope)
@@ -77,8 +79,12 @@ namespace Itinero.Core
                 if (smallest > viewport.Resolution) return smallest;
 
                 var biggest = Math.Max(resolutionExtremes.Item1, resolutionExtremes.Item2);
+
+                // This is the ...AndAlwaysFillViewpor part
                 var viewportFillingResolution = CalculateResolutionAtWhichMapFillsViewport(viewport, mapEnvelope);
+                if (viewportFillingResolution < smallest) return viewport.Resolution; // Mission impossible. Can't adhere to both restrictions
                 biggest = Math.Min(biggest, viewportFillingResolution);
+
                 if (biggest < viewport.Resolution) return biggest;
             }
             return viewport.Resolution;
