@@ -17,7 +17,7 @@ using Math = System.Math;
 
 namespace Itinero.Android
 {
-    public sealed class MapControl : AbsoluteLayout
+    public sealed class MapControl : FrameLayout
     {
         private readonly OpenTKSurface _openTKSurface;
         private readonly TouchHandler _touchHandler = new TouchHandler();
@@ -30,9 +30,11 @@ namespace Itinero.Android
         
         public MapControl(Context context, IAttributeSet attrs) : base(context, attrs)
         {
-            _openTKSurface = new OpenTKSurface(context, attrs);
-            _openTKSurface.Width = 0;
-            _openTKSurface.Height = 0;
+            _openTKSurface = new OpenTKSurface(context, attrs)
+            {
+                Width = 0,
+                Height = 0
+            };
 
             AddView(_openTKSurface);
             CurrentLocationLayer.DataChanged += (sender, args) => Invalidate();

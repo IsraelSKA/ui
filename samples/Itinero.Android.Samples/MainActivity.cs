@@ -2,6 +2,7 @@
 using Android.OS;
 using Itinero.Code.Samples;
 using Mapsui.Geometries;
+using Mapsui.Projection;
 
 namespace Itinero.Android.Samples
 {
@@ -22,7 +23,7 @@ namespace Itinero.Android.Samples
             //mapControl.Map.Layers.Add(MbTilesSample.CreateLayer(new SQLitePlatformAndroid(), Setup.DatabasePath));
             mapControl.Map.Layers.Add(LineStringSample.CreateLayer());
             mapControl.Map.Layers.Add(CitiesLayerSample.CreateLayer());
-            mapControl.AddMarker(new Marker(mapControl.Context) { GeoPosition = new Point(-10000000, 0)});
+            mapControl.AddMarker(new Marker(mapControl.Context) { GeoPosition = SphericalMercator.FromLonLat(4.9, 52.366667)});
             mapControl.ShowCurrentLocation = true;
 
             mapControl.Map.Viewport.RenderResolutionMultiplier = 2;
