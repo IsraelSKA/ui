@@ -19,6 +19,7 @@ namespace Itinero.Android
         private Color _backColor;
         private IViewport _viewport;
         private IEnumerable<ILayer> _layers;
+        private Action _updateMarkers;
 
         public OpenTKSurface(Context context, IAttributeSet attrs) : base(context, attrs)
         {
@@ -55,11 +56,12 @@ namespace Itinero.Android
             GL.MatrixMode(All.Modelview);
         }
 
-        public void RefreshGraphics(IViewport viewport, IEnumerable<ILayer> layers, Color backColor)
+        public void RefreshGraphics(IViewport viewport, IEnumerable<ILayer> layers, Color backColor, Action updateMarkers)
         {
             _backColor = backColor;
             _viewport = viewport;
             _layers = layers;
+            _updateMarkers = updateMarkers;
             _refreshGraphics = true;
         }
 
@@ -75,7 +77,8 @@ namespace Itinero.Android
             GL.ClearColor(_backColor.R, _backColor.G, _backColor.B, _backColor.A);
             GL.Clear(ClearBufferMask.ColorBufferBit);
 
-           _renderer.Render(_viewport, _layers);
+            _renderer.Render(_viewport, _layers);
+            _updateMarkers();
 
             SwapBuffers();
         }

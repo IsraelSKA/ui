@@ -217,8 +217,8 @@ namespace Itinero.Android
 
             base.OnDraw(canvas);
 
-            UpdateMarkerLayer(copiedViewport, _markers);
-            _openTKSurface.RefreshGraphics(copiedViewport, layers, Map.BackColor);
+            _openTKSurface.RefreshGraphics(copiedViewport, layers, Map.BackColor, 
+                () => UpdateMarkerLayer(copiedViewport, _markers));
             
         }
 
