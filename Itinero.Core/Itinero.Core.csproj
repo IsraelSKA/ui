@@ -35,6 +35,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="CurrentLocationLayer.cs" />
+    <Compile Include="Marker\MapControlAlignment.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RestrictPanZoom.cs" />
   </ItemGroup>

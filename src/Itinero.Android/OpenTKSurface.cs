@@ -14,12 +14,11 @@ namespace Itinero.Android
 {
     public class OpenTKSurface : AndroidGameView
     {
-        readonly MapRenderer _renderer;
-        bool _refreshGraphics;
-
-        Color _backColor;
-        IViewport _viewport;
-        IEnumerable<ILayer> _layers;
+        private readonly MapRenderer _renderer;
+        private bool _refreshGraphics;
+        private Color _backColor;
+        private IViewport _viewport;
+        private IEnumerable<ILayer> _layers;
 
         public OpenTKSurface(Context context, IAttributeSet attrs) : base(context, attrs)
         {

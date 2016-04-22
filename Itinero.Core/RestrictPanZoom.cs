@@ -80,7 +80,7 @@ namespace Itinero.Core
 
                 var biggest = Math.Max(resolutionExtremes.Item1, resolutionExtremes.Item2);
 
-                // This is the ...AndAlwaysFillViewpor part
+                // This is the ...AndAlwaysFillViewport part
                 var viewportFillingResolution = CalculateResolutionAtWhichMapFillsViewport(viewport, mapEnvelope);
                 if (viewportFillingResolution < smallest) return viewport.Resolution; // Mission impossible. Can't adhere to both restrictions
                 biggest = Math.Min(biggest, viewportFillingResolution);
