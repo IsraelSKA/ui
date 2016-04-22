@@ -67,8 +67,6 @@ namespace Itinero.Android
 
         protected override void OnRenderFrame(FrameEventArgs e)
         {
-            base.OnRenderFrame(e);
-
             if (!_refreshGraphics) return;
             _refreshGraphics = false;
             
@@ -81,6 +79,8 @@ namespace Itinero.Android
             _updateMarkers();
 
             SwapBuffers();
+
+            base.OnRenderFrame(e);
         }
     }
 }

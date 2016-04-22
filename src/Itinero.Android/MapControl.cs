@@ -6,6 +6,7 @@ using Android.App;
 using Android.Content;
 using Android.Graphics;
 using Android.Util;
+using Android.Views;
 using Android.Widget;
 using Itinero.Core;
 using Java.Lang;
@@ -17,7 +18,7 @@ using Math = System.Math;
 
 namespace Itinero.Android
 {
-    public sealed class MapControl : FrameLayout
+    public sealed class MapControl : RelativeLayout
     {
         private readonly OpenTKSurface _openTKSurface;
         private readonly TouchHandler _touchHandler = new TouchHandler();
@@ -26,6 +27,7 @@ namespace Itinero.Android
         private bool _showCurrentLocation = true;
         private bool _viewportInitialized;
         private readonly List<Marker> _markers = new List<Marker>();
+        private RelativeLayout _markerContainer;
 
         
         public MapControl(Context context, IAttributeSet attrs) : base(context, attrs)
@@ -37,12 +39,23 @@ namespace Itinero.Android
             };
 
             AddView(_openTKSurface);
+
+            AddMarkerContainer(context, attrs);
+
             CurrentLocationLayer.DataChanged += (sender, args) => Invalidate();
 
             Map = new Map();
             Touch += OnTouch;
 
             SetWillNotDraw(false);
+        }
+
+        private void AddMarkerContainer(Context context, IAttributeSet attrs)
+        {
+            _markerContainer = new RelativeLayout(context, attrs);
+            _markerContainer.SetBackgroundColor(Color.Transparent);
+            var layoutParams = new LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.MatchParent);
+            AddView(_markerContainer, layoutParams);
         }
 
         protected override void OnSizeChanged(int w, int h, int oldw, int oldh)
@@ -59,7 +72,7 @@ namespace Itinero.Android
 
         public void AddMarker(Marker marker)
         {
-            AddView(marker, marker.RelativeLayoutParams);
+            _markerContainer.AddView(marker, marker.RelativeLayoutParams);
             _markers.Add(marker);
         }
 
@@ -214,8 +227,6 @@ namespace Itinero.Android
             var copiedViewport = new Viewport(Map.Viewport) { // Copy so Viewport is not changed during rendering to prevent flickering
                 Center = { X = Map.Viewport.Center.X, Y = Map.Viewport.Center.Y } // Next version of Mapsui will have deep Viewport copy constructor
             };
-
-            base.OnDraw(canvas);
 
             _openTKSurface.RefreshGraphics(copiedViewport, layers, Map.BackColor, 
                 () => UpdateMarkerLayer(copiedViewport, _markers));
