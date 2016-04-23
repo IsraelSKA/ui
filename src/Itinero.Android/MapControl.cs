@@ -75,7 +75,8 @@ namespace Itinero.Android
         public void AddMarker(Marker marker) 
         {
             marker.CreateView(Context);
-            _markerContainer.AddView(marker.View, marker.View.LayoutParameters);
+            if (marker.View.LayoutParameters != null) _markerContainer.AddView(marker.View, marker.View.LayoutParameters);
+            else _markerContainer.AddView(marker.View);
             _markers.Add(marker);
         }
 
