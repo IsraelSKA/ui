@@ -8,7 +8,9 @@ using Android.Graphics;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+using Itinero.Android.MapMarkers;
 using Itinero.Core;
+using Itinero.Core.Marker;
 using Java.Lang;
 using Mapsui;
 using Mapsui.Fetcher;
@@ -26,7 +28,7 @@ namespace Itinero.Android
         private string _previousDataError = "";
         private bool _showCurrentLocation = true;
         private bool _viewportInitialized;
-        private readonly List<Marker> _markers = new List<Marker>();
+        private readonly List<IMarker> _markers = new List<IMarker>();
         private RelativeLayout _markerContainer;
 
         
@@ -68,11 +70,12 @@ namespace Itinero.Android
 
         public RestrictPanZoom Restrict = new RestrictPanZoom();
 
-        public IEnumerable<Marker> Markers => _markers;
+        public IEnumerable<IMarker> Markers => _markers;
 
-        public void AddMarker(Marker marker)
+        public void AddMarker(Marker marker) 
         {
-            _markerContainer.AddView(marker, marker.RelativeLayoutParams);
+            marker.CreateView(Context);
+            _markerContainer.AddView(marker.View, marker.View.LayoutParameters);
             _markers.Add(marker);
         }
 
@@ -233,11 +236,12 @@ namespace Itinero.Android
             
         }
 
-        private static void UpdateMarkerLayer(Viewport viewport, List<Marker> markers)
+        private static void UpdateMarkerLayer(Viewport viewport, List<IMarker> markers)
         {
             foreach (var marker in markers)
             {
-                marker.SetScreenPosition(viewport.WorldToScreen(marker.GeoPosition.X, marker.GeoPosition.Y));
+                var screenPosition = viewport.WorldToScreen(marker.GeoPosition.X, marker.GeoPosition.Y);
+                MarkerHelper.SetScreenPosition(marker.View, screenPosition, marker.HorizontalAlignment, marker.VerticalAlignment);
             }
         }
     }

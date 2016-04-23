@@ -97,7 +97,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Marker.cs" />
+    <Compile Include="MapMarkers\IMarker.cs" />
+    <Compile Include="MapMarkers\MarkerHelper.cs" />
+    <Compile Include="MapMarkers\Marker.cs" />
     <Compile Include="OpenTKSurface.cs" />
     <Compile Include="MapControl.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
