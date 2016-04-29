@@ -8,7 +8,7 @@
 
     <Target Name="Build" DependsOnTargets="CleanRelease;RestorePackages">
     <MSBuild Projects="$(SolutionFile)"
-             Targets="src\Itinero_ui_Core;src\Itinero_ui_[Android]"             
+             Targets="src\Itinero_ui_Core;src\Itinero_ui[Android]"             
              Properties="Configuration=Release;BaseIntermediateOutputPath=$(MSBuildProjectDirectory)\..\artifacts\Release\obj\;OutputPath=$(MSBuildProjectDirectory)\..\artifacts\Release\bin" />
     </Target>
   
