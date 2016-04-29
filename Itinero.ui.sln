@@ -28,6 +28,17 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Itinero.Core.Tests", "tests
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Itinero.Core", "src\Itinero.Core\Itinero.Core.csproj", "{C2B0E787-7932-488B-96D0-94FBC9F491B0}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{1E0D595A-A1B6-43F9-B773-98F37E679ED2}"
+	ProjectSection(SolutionItems) = preProject
+		build\build.proj = build\build.proj
+		build\buildpack.bat = build\buildpack.bat
+		build\buildpackpush.bat = build\buildpackpush.bat
+		build\Itinero.ui.nuspec = build\Itinero.ui.nuspec
+		build\notetoself.txt = build\notetoself.txt
+		build\readme.txt = build\readme.txt
+		build\updateversionnumber.proj = build\updateversionnumber.proj
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
