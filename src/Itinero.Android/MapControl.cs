@@ -40,7 +40,8 @@ namespace Itinero.Android
 
             AddView(_openTKSurface);
 
-            AddMarkerContainer(context, attrs);
+            _markerContainer = CreateMarkerContainer(context, attrs);
+            AddMarkerContainer();
 
             CurrentLocationLayer.DataChanged += (sender, args) => Invalidate();
 
@@ -50,10 +51,16 @@ namespace Itinero.Android
             SetWillNotDraw(false);
         }
 
-        private void AddMarkerContainer(Context context, IAttributeSet attrs)
+        private RelativeLayout CreateMarkerContainer(Context context, IAttributeSet attrs)
         {
-            _markerContainer = new RelativeLayout(context, attrs);
-            _markerContainer.SetBackgroundColor(Color.Transparent);
+            var markerContainer = new RelativeLayout(context, attrs);
+            markerContainer.SetBackgroundColor(Color.Transparent);
+            markerContainer.Visibility = ViewStates.Invisible;
+            return markerContainer;
+        }
+
+        private void AddMarkerContainer()
+        {
             var layoutParams = new LayoutParams(ViewGroup.LayoutParams.MatchParent, ViewGroup.LayoutParams.MatchParent);
             AddView(_markerContainer, layoutParams);
         }
@@ -215,9 +222,9 @@ namespace Itinero.Android
         
         protected override void OnDraw(Canvas canvas)
         {
-            if (!_viewportInitialized) if (!TryInitializeViewport()) return;
-
-            ICollection<ILayer> layers = Map.Layers;
+            if (!_viewportInitialized) if (!TryInitializeViewport()) return; // failed to initialized 
+            
+            ICollection <ILayer> layers = Map.Layers;
             if (ShowCurrentLocation)
             {
                 layers = layers.ToList();
@@ -229,12 +236,20 @@ namespace Itinero.Android
             };
 
             _openTKSurface.RefreshGraphics(copiedViewport, layers, Map.BackColor, 
-                () => UpdateMarkerLayer(copiedViewport, _markers));
-            
+                () => UpdateMarkerLayer(copiedViewport, _markers, _markerContainer));
+
+            if (_markerContainer.Visibility == ViewStates.Invisible) 
+            {
+                // trick so show marker after layout has been updated
+                // Only done on first render
+                UpdateMarkerLayer(copiedViewport, _markers, _markerContainer);
+                _markerContainer.Visibility = ViewStates.Visible;
+            }
         }
 
-        private static void UpdateMarkerLayer(Viewport viewport, List<IMarker> markers)
+        private static void UpdateMarkerLayer(Viewport viewport, List<IMarker> markers, RelativeLayout markerContainer)
         {
+
             foreach (var marker in markers)
             {
                 var screenPosition = viewport.WorldToScreen(marker.GeoPosition.X, marker.GeoPosition.Y);

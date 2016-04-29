@@ -76,9 +76,10 @@ namespace Itinero.Android
             GL.Clear(ClearBufferMask.ColorBufferBit);
 
             _renderer.Render(_viewport, _layers);
-            _updateMarkers();
-
+           
             SwapBuffers();
+
+            _updateMarkers();
 
             base.OnRenderFrame(e);
         }
