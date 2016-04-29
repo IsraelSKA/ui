@@ -5,7 +5,7 @@ VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{F1BE3410-F43A-41F9-A369-D0D5F6F6B6B5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Itinero.ui", "src\Itinero.Android\Itinero.ui.csproj", "{2A4034B5-D9FE-4D89-BF4B-7AA0F1E58646}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Itinero.ui", "src\Itinero.ui\Itinero.ui.csproj", "{2A4034B5-D9FE-4D89-BF4B-7AA0F1E58646}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{BC036AD8-FFA3-42EA-B84D-E7CD5FCED54D}"
 EndProject
@@ -27,7 +27,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{CAD730F2
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Itinero.Core.Tests", "tests\Itinero.Core.Tests\Itinero.Core.Tests.csproj", "{D4C5836E-C583-4E82-89CC-03CCDF11A1F7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Itinero.ui.Core", "src\Itinero.Core\Itinero.ui.Core.csproj", "{C2B0E787-7932-488B-96D0-94FBC9F491B0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Itinero.ui.Core", "src\Itinero.ui.Core\Itinero.ui.Core.csproj", "{C2B0E787-7932-488B-96D0-94FBC9F491B0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{1E0D595A-A1B6-43F9-B773-98F37E679ED2}"
 	ProjectSection(SolutionItems) = preProject
