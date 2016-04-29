@@ -16,6 +16,7 @@ namespace Itinero.Android.Samples
         {
         }
 
+
         public override void OnCreate()
         {
             base.OnCreate();

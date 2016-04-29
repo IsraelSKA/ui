@@ -19,7 +19,7 @@ using Math = System.Math;
 
 namespace Itinero.Android
 {
-    public sealed class MapControl : RelativeLayout
+    public sealed class MapControl : FrameLayout
     {
         private readonly OpenTKSurface _openTKSurface;
         private readonly TouchHandler _touchHandler = new TouchHandler();
@@ -28,7 +28,7 @@ namespace Itinero.Android
         private bool _showCurrentLocation = true;
         private bool _viewportInitialized;
         private readonly List<IMarker> _markers = new List<IMarker>();
-        private RelativeLayout _markerContainer;
+        private readonly ViewGroup _markerContainer;
         
         public MapControl(Context context, IAttributeSet attrs) : base(context, attrs)
         {
@@ -38,6 +38,7 @@ namespace Itinero.Android
                 Height = 0
             };
 
+            
             AddView(_openTKSurface);
 
             _markerContainer = CreateMarkerContainer(context, attrs);
@@ -51,7 +52,7 @@ namespace Itinero.Android
             SetWillNotDraw(false);
         }
 
-        private RelativeLayout CreateMarkerContainer(Context context, IAttributeSet attrs)
+        private ViewGroup CreateMarkerContainer(Context context, IAttributeSet attrs)
         {
             var markerContainer = new RelativeLayout(context, attrs);
             markerContainer.SetBackgroundColor(Color.Transparent);
@@ -236,18 +237,18 @@ namespace Itinero.Android
             };
 
             _openTKSurface.RefreshGraphics(copiedViewport, layers, Map.BackColor, 
-                () => UpdateMarkerLayer(copiedViewport, _markers, _markerContainer));
+                () => UpdateMarkerLayer(copiedViewport, _markers));
 
             if (_markerContainer.Visibility == ViewStates.Invisible) 
             {
                 // trick so show marker after layout has been updated
                 // Only done on first render
-                UpdateMarkerLayer(copiedViewport, _markers, _markerContainer);
+                UpdateMarkerLayer(copiedViewport, _markers);
                 _markerContainer.Visibility = ViewStates.Visible;
             }
         }
 
-        private static void UpdateMarkerLayer(Viewport viewport, List<IMarker> markers, RelativeLayout markerContainer)
+        private static void UpdateMarkerLayer(Viewport viewport, List<IMarker> markers)
         {
 
             foreach (var marker in markers)

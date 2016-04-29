@@ -28,12 +28,14 @@ namespace Itinero.Core
             var locator = CrossGeolocator.Current;
             locator.DesiredAccuracy = 50;
             locator.PositionChanged += LocatorOnPositionChanged;
-            locator.StartListeningAsync(5000, 100);
+            locator.StartListeningAsync(IntervalInSeconds * 1000, 100);
         }
+
+        public int IntervalInSeconds { get; set; } = 60;
 
         public void StartListening()
         {
-            CrossGeolocator.Current.StartListeningAsync(5000, 100);
+            CrossGeolocator.Current.StartListeningAsync(IntervalInSeconds * 1000, 100);
         }
 
         public void StopListening()
