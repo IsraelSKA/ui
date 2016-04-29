@@ -21,7 +21,7 @@ namespace Itinero.ui.MapMarkers
 
         private static ImageButton CreateDefaultView(Context context)
         {
-            var imageStream = LoadEmbeddedResource("Itinero.Core.Images.marker.png", typeof(VerticalAlignmentType));
+            var imageStream = LoadEmbeddedResource("Itinero.ui.Core.Images.marker.png", typeof(VerticalAlignmentType));
             
             return new ImageButton(context)
             {

@@ -13,7 +13,7 @@ namespace Itinero.ui
 
     class TouchHandler
     {
-        enum TouchMode
+        public enum TouchMode
         {
             None,
             Dragging,
@@ -24,7 +24,8 @@ namespace Itinero.ui
         public PointF Touch { get; private set; }
         public double Scale { get; private set; }
 
-        TouchMode _mode = TouchMode.None;
+        public TouchMode Mode { get; private set; } = TouchMode.None;
+
         float _oldDist = 1f;
         
         public MapAction Handle(MotionEvent motionEvent)
@@ -39,7 +40,7 @@ namespace Itinero.ui
                 case MotionEventActions.Down:
                     PreviousTouch = new PointF(x, y);
                     Touch = new PointF(x, y);
-                    _mode = TouchMode.Dragging;
+                    Mode = TouchMode.Dragging;
                     break;
                 case MotionEventActions.Up:
                     return MapAction.RefreshData;
@@ -49,12 +50,12 @@ namespace Itinero.ui
                     _oldDist = Spacing(motionEvent);
                     MidPoint(Touch, motionEvent);
                     PreviousTouch = Touch;
-                    _mode = TouchMode.Zooming;
+                    Mode = TouchMode.Zooming;
                     break;
                 case MotionEventActions.Pointer2Up:
                     return MapAction.RefreshData;
                 case MotionEventActions.Move:
-                    switch (_mode)
+                    switch (Mode)
                     {
                         case TouchMode.Dragging:
                             Scale = 1;

@@ -87,7 +87,7 @@ namespace Itinero.ui.Core
 
         public static Style CreateBitmapStyle()
         {
-            var stream = LoadEmbeddedResource("Itinero.Core.Images.current_location.png", typeof(CurrentLocationLayer));
+            var stream = LoadEmbeddedResource("Itinero.ui.Core.Images.current_location.png", typeof(CurrentLocationLayer));
             return new SymbolStyle { BitmapId = BitmapRegistry.Instance.Register(stream) };
         }
         

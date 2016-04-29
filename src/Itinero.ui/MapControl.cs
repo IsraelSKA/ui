@@ -186,7 +186,7 @@ namespace Itinero.ui
             }
             else // no problems
             {
-                RunOnUiThread(Invalidate);
+                if (_touchHandler.Mode == TouchHandler.TouchMode.None) RunOnUiThread(Invalidate);
             }
         }
 
