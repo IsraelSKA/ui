@@ -156,9 +156,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Itinero.Core\Itinero.Core.csproj">
+    <ProjectReference Include="..\..\src\Itinero.Core\Itinero.ui.Core.csproj">
       <Project>{c2b0e787-7932-488b-96d0-94fbc9f491b0}</Project>
-      <Name>Itinero.Core</Name>
+      <Name>Itinero.ui.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\Itinero.Code.Samples\Itinero.Code.Samples.csproj">
       <Project>{28681778-CD03-4E87-9191-55FE2098B90C}</Project>

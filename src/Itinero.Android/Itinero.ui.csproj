@@ -117,9 +117,9 @@
     <AndroidResource Include="Resources\Values\Strings.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Itinero.Core\Itinero.Core.csproj">
+    <ProjectReference Include="..\Itinero.Core\Itinero.ui.Core.csproj">
       <Project>{c2b0e787-7932-488b-96d0-94fbc9f491b0}</Project>
-      <Name>Itinero.Core</Name>
+      <Name>Itinero.ui.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />

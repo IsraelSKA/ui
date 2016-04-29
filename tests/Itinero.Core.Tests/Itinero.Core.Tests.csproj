@@ -75,9 +75,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Itinero.Core\Itinero.Core.csproj">
+    <ProjectReference Include="..\..\src\Itinero.Core\Itinero.ui.Core.csproj">
       <Project>{c2b0e787-7932-488b-96d0-94fbc9f491b0}</Project>
-      <Name>Itinero.Core</Name>
+      <Name>Itinero.ui.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
