@@ -10,7 +10,6 @@ using Android.Views;
 using Android.Widget;
 using Itinero.Android.MapMarkers;
 using Itinero.Core;
-using Itinero.Core.Marker;
 using Java.Lang;
 using Mapsui;
 using Mapsui.Fetcher;
@@ -30,7 +29,6 @@ namespace Itinero.Android
         private bool _viewportInitialized;
         private readonly List<IMarker> _markers = new List<IMarker>();
         private RelativeLayout _markerContainer;
-
         
         public MapControl(Context context, IAttributeSet attrs) : base(context, attrs)
         {
@@ -72,11 +70,9 @@ namespace Itinero.Android
 
         public IEnumerable<IMarker> Markers => _markers;
 
-        public void AddMarker(Marker marker) 
+        public void AddMarker(IMarker marker) 
         {
-            marker.CreateView(Context);
-            if (marker.View.LayoutParameters != null) _markerContainer.AddView(marker.View, marker.View.LayoutParameters);
-            else _markerContainer.AddView(marker.View);
+            _markerContainer.AddView(marker.View);
             _markers.Add(marker);
         }
 

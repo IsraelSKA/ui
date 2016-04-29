@@ -1,10 +1,5 @@
 ﻿using Android.App;
-using Android.Content;
-using Android.Graphics;
-using Android.Graphics.Drawables;
 using Android.OS;
-using Android.Views;
-using Android.Widget;
 using Itinero.Android.MapMarkers;
 using Itinero.Code.Samples;
 using Mapsui.Projection;
@@ -28,8 +23,8 @@ namespace Itinero.Android.Samples
             //mapControl.Map.Layers.Add(MbTilesSample.CreateLayer(new SQLitePlatformAndroid(), Setup.DatabasePath));
             mapControl.Map.Layers.Add(LineStringSample.CreateLayer());
             mapControl.Map.Layers.Add(CitiesLayerSample.CreateLayer());
-            mapControl.AddMarker(new Marker { GeoPosition = SphericalMercator.FromLonLat(4.9, 52.366667)});
-            mapControl.AddMarker(new Marker { GeoPosition = SphericalMercator.FromLonLat(18.423889, -33.925278), View = MarkerSample.CreateCustomView(this) });
+            mapControl.AddMarker(new Marker(mapControl.Context) { GeoPosition = SphericalMercator.FromLonLat(4.9, 52.366667)}) ;
+            mapControl.AddMarker(MarkerSample.CreateCustomMarker(mapControl.Context));
 
             mapControl.ShowCurrentLocation = true;
 

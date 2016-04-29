@@ -4,11 +4,21 @@ using Android.Graphics.Drawables;
 using Android.Views;
 using Android.Widget;
 using Itinero.Android.MapMarkers;
+using Mapsui.Projection;
 
 namespace Itinero.Android.Samples
 {
     class MarkerSample
     {
+        public static IMarker CreateCustomMarker(Context context)
+        {
+            return new Marker(context)
+            {
+                GeoPosition = SphericalMercator.FromLonLat(18.423889, -33.925278),
+                View = CreateCustomView(context)
+            };
+        }
+
         public static LinearLayout CreateCustomView(Context context)
         {
             var linearLayout = new LinearLayout(context);
