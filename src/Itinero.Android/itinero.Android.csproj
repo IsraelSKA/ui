@@ -97,6 +97,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Shared\SharedAssemblyVersion.cs">
+      <Link>Properties\SharedAssemblyVersion.cs</Link>
+    </Compile>
     <Compile Include="MapMarkers\IMarker.cs" />
     <Compile Include="MapMarkers\MarkerHelper.cs" />
     <Compile Include="MapMarkers\Marker.cs" />
