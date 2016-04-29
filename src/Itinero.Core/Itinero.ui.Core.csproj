@@ -8,8 +8,8 @@
     <ProjectGuid>{C2B0E787-7932-488B-96D0-94FBC9F491B0}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Itinero.Core</RootNamespace>
-    <AssemblyName>Itinero.Core</AssemblyName>
+    <RootNamespace>Itinero.ui.Core</RootNamespace>
+    <AssemblyName>Itinero.ui.Core</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
