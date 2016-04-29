@@ -1,5 +1,5 @@
 ﻿using Itinero.Code.Samples;
-using Itinero.Core;
+using Itinero.ui.Core;
 using SQLite.Net.Platform.Win32;
 
 namespace Itinero.Wpf.Samples

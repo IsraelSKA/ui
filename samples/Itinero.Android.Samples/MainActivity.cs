@@ -1,7 +1,8 @@
 ﻿using Android.App;
 using Android.OS;
-using Itinero.Android.MapMarkers;
 using Itinero.Code.Samples;
+using Itinero.ui;
+using Itinero.ui.MapMarkers;
 using Mapsui.Projection;
 
 namespace Itinero.Android.Samples

@@ -8,8 +8,8 @@ using Android.Graphics;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
-using Itinero.Android.MapMarkers;
-using Itinero.Core;
+using Itinero.ui.Core;
+using Itinero.ui.MapMarkers;
 using Java.Lang;
 using Mapsui;
 using Mapsui.Fetcher;
@@ -17,7 +17,7 @@ using Mapsui.Layers;
 using Mapsui.Utilities;
 using Math = System.Math;
 
-namespace Itinero.Android
+namespace Itinero.ui
 {
     public sealed class MapControl : FrameLayout
     {

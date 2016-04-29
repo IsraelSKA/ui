@@ -2,7 +2,7 @@ using System;
 using Android.Graphics;
 using Android.Views;
 
-namespace Itinero.Android
+namespace Itinero.ui
 {
     enum MapAction
     {

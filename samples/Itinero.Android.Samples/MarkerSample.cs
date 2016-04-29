@@ -3,7 +3,7 @@ using Android.Graphics;
 using Android.Graphics.Drawables;
 using Android.Views;
 using Android.Widget;
-using Itinero.Android.MapMarkers;
+using Itinero.ui.MapMarkers;
 using Mapsui.Projection;
 
 namespace Itinero.Android.Samples

@@ -10,7 +10,7 @@ using OpenTK;
 using OpenTK.Graphics.ES11;
 using OpenTK.Platform.Android;
 
-namespace Itinero.Android
+namespace Itinero.ui
 {
     public class OpenTKSurface : AndroidGameView
     {

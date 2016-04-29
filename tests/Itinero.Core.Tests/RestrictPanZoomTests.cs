@@ -1,4 +1,5 @@
-﻿using Mapsui;
+﻿using Itinero.ui.Core;
+using Mapsui;
 using Mapsui.Geometries;
 using NUnit.Framework;
 

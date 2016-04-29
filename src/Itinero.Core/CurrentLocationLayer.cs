@@ -11,7 +11,7 @@ using Mapsui.Styles;
 using Plugin.Geolocator;
 using Plugin.Geolocator.Abstractions;
 
-namespace Itinero.Core
+namespace Itinero.ui.Core
 {
     public class CurrentLocationLayer : BaseLayer
     {

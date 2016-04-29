@@ -5,10 +5,10 @@ using Android.Graphics;
 using Android.Graphics.Drawables;
 using Android.Views;
 using Android.Widget;
-using Itinero.Core.Marker;
+using Itinero.ui.Core.Marker;
 using Point = Mapsui.Geometries.Point;
 
-namespace Itinero.Android.MapMarkers
+namespace Itinero.ui.MapMarkers
 {
     public class Marker : IMarker
     {

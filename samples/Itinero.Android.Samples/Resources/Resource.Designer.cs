@@ -26,8 +26,8 @@ namespace Itinero.Android.Samples
 		
 		public static void UpdateIdValues()
 		{
-			global::Itinero.Android.Resource.String.ApplicationName = global::Itinero.Android.Samples.Resource.String.ApplicationName;
-			global::Itinero.Android.Resource.String.Hello = global::Itinero.Android.Samples.Resource.String.Hello;
+			global::Itinero.ui.Resource.String.ApplicationName = global::Itinero.Android.Samples.Resource.String.ApplicationName;
+			global::Itinero.ui.Resource.String.Hello = global::Itinero.Android.Samples.Resource.String.Hello;
 			global::Mapsui.Rendering.Android.Resource.String.ApplicationName = global::Itinero.Android.Samples.Resource.String.ApplicationName;
 			global::Mapsui.Rendering.Android.Resource.String.Hello = global::Itinero.Android.Samples.Resource.String.Hello;
 			global::Mapsui.Rendering.OpenTK.Resource.String.ApplicationName = global::Itinero.Android.Samples.Resource.String.ApplicationName;

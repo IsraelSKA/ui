@@ -1,9 +1,8 @@
-﻿using Android.Content;
-using Android.Views;
-using Itinero.Core.Marker;
+﻿using Android.Views;
+using Itinero.ui.Core.Marker;
 using Mapsui.Geometries;
 
-namespace Itinero.Android.MapMarkers
+namespace Itinero.ui.MapMarkers
 {
     public interface IMarker
     {

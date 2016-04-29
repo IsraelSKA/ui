@@ -1,8 +1,8 @@
 using Android.Views;
-using Itinero.Core.Marker;
+using Itinero.ui.Core.Marker;
 using Mapsui.Geometries;
 
-namespace Itinero.Android.MapMarkers
+namespace Itinero.ui.MapMarkers
 {
     public static class MarkerHelper
     {

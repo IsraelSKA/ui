@@ -4,7 +4,7 @@ using System.Linq;
 using Mapsui;
 using Mapsui.Geometries;
 
-namespace Itinero.Core
+namespace Itinero.ui.Core
 {
     public class PairOfDoubles : Tuple<double, double>
     {

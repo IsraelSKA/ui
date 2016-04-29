@@ -1,5 +1,5 @@
 ﻿
-namespace Itinero.Core.Marker
+namespace Itinero.ui.Core.Marker
 {
     public enum HorizontalAlignmentType
     {
