@@ -23,6 +23,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Itinero.Android.Samples", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Itinero.Core", "Itinero.Core\Itinero.Core.csproj", "{C2B0E787-7932-488B-96D0-94FBC9F491B0}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{CAD730F2-7A97-432A-B66B-D1015876741A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Itinero.Core.Tests", "tests\Itinero.Core.Tests\Itinero.Core.Tests.csproj", "{D4C5836E-C583-4E82-89CC-03CCDF11A1F7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +55,10 @@ Global
 		{C2B0E787-7932-488B-96D0-94FBC9F491B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C2B0E787-7932-488B-96D0-94FBC9F491B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C2B0E787-7932-488B-96D0-94FBC9F491B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4C5836E-C583-4E82-89CC-03CCDF11A1F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4C5836E-C583-4E82-89CC-03CCDF11A1F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4C5836E-C583-4E82-89CC-03CCDF11A1F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4C5836E-C583-4E82-89CC-03CCDF11A1F7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -61,5 +69,6 @@ Global
 		{023E6325-BCBE-469E-B375-2EC553F0F9B9} = {BC036AD8-FFA3-42EA-B84D-E7CD5FCED54D}
 		{00C4D5A5-77EB-4C91-81DE-46A8D225919C} = {BC036AD8-FFA3-42EA-B84D-E7CD5FCED54D}
 		{C2B0E787-7932-488B-96D0-94FBC9F491B0} = {F1BE3410-F43A-41F9-A369-D0D5F6F6B6B5}
+		{D4C5836E-C583-4E82-89CC-03CCDF11A1F7} = {CAD730F2-7A97-432A-B66B-D1015876741A}
 	EndGlobalSection
 EndGlobal
