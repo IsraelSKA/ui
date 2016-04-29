@@ -3,9 +3,10 @@
   <metadata>
     <id>Itinero.ui</id>
     <version>$version$</version>
-    <title>Itinero.io</title>
+    <title>Itinero.ui</title>
     <authors>Ben Abelshausen, Paul den Dulk</authors>
     <owners>Ben Abelshausen</owners>
+    <copyright>Ben Abelshausen</copyright>
     <licenseUrl>https://github.com/itinero/ui/blob/master/LICENSE</licenseUrl>
     <projectUrl>https://github.com/itinero/ui</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
