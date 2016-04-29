@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Itinero.ui</id>
+    <version>$version$</version>
+    <title>Itinero.io</title>
+    <authors>Ben Abelshausen, Paul den Dulk</authors>
+    <owners>Ben Abelshausen</owners>
+    <licenseUrl>https://github.com/itinero/ui/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/itinero/ui</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>
+      Itinero.ui is a map component optimized for routing on mobile applications
+    </description>
+    <tags>map mapping gis geo osm</tags>
+    <language>en-US</language>
+    <dependencies>
+      <dependency id="Mapsui" version="[0.8,0.9)"/>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="..\artifacts\Release\bin\Itinero.Core.dll" target="lib\MonoAndroid\Itinero.Core.dll" />
+    <file src="..\artifacts\Release\bin\Itinero.Android.dll" target="lib\MonoAndroid\tinero.Android.dll" />
+<!--
+    <file src="..\artifacts\Release\bin\Itinero.Core.dll" target="lib\Xamarin.iOS\Itinero.Core.dll" />
+    <file src="..\artifacts\Release\bin\Itinero.iOS.dll" target="lib\Xamarin.iOS\Itinero.iOS.dll" />
+--> 
+  </files>
+</package>

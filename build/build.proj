@@ -1,0 +1,23 @@
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+    <PropertyGroup>
+        <SolutionFile>.\..\Itinero.ui.sln</SolutionFile>
+        <SolutionDir>$(MSBuildProjectDirectory)</SolutionDir>
+        <ToolsHome Condition=" '$(ToolsHome)'=='' ">$(MSBuildProjectDirectory)\..\tools\</ToolsHome>
+    </PropertyGroup>
+
+    <Target Name="Build" DependsOnTargets="CleanRelease;RestorePackages">
+    <MSBuild Projects="$(SolutionFile)"
+             Targets="src\Itinero_Core;src\Itinero_Android"             Properties="Configuration=Release;BaseIntermediateOutputPath=$(MSBuildProjectDirectory)\..\artifacts\Release\obj\;OutputPath=$(MSBuildProjectDirectory)\..\artifacts\Release\bin" />
+    </Target>
+  
+    <Target Name="CleanRelease">
+    <Exec Command="rmdir /s /q $(MSBuildProjectDirectory)\..\artifacts\Release\obj"></Exec>
+    <Exec Command="rmdir /s /q $(MSBuildProjectDirectory)\..\artifacts\Release\bin"></Exec>
+    </Target>
+
+    <Target Name="RestorePackages">
+        <Exec Command="NuGet.exe restore .\..\Itinero.ui.sln" />
+    </Target>
+  
+</Project>
