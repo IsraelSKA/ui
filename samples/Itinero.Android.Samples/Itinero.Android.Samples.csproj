@@ -140,9 +140,9 @@
     <None Include="Properties\AndroidManifest.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Itinero.ui\Itinero.ui[Android].csproj">
+    <ProjectReference Include="..\..\src\Itinero.ui\Itinero.ui-Android.csproj">
       <Project>{2a4034b5-d9fe-4d89-bf4b-7aa0f1e58646}</Project>
-      <Name>Itinero.ui[Android]</Name>
+      <Name>Itinero.ui-Android</Name>
     </ProjectReference>
     <ProjectReference Include="..\Itinero.Code.Samples\Itinero.Code.Samples.csproj">
       <Project>{28681778-cd03-4e87-9191-55fe2098b90c}</Project>
