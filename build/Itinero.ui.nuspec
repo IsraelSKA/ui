@@ -20,8 +20,8 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="..\artifacts\Release\bin\Itinero.Core.dll" target="lib\MonoAndroid\Itinero.Core.dll" />
-    <file src="..\artifacts\Release\bin\Itinero.Android.dll" target="lib\MonoAndroid\tinero.Android.dll" />
+    <file src="..\artifacts\Release\bin\Itinero.ui.Core.dll" target="lib\MonoAndroid\Itinero.ui.Core.dll" />
+    <file src="..\artifacts\Release\bin\Itinero.ui.dll" target="lib\MonoAndroid\tinero.ui.dll" />
 <!--
     <file src="..\artifacts\Release\bin\Itinero.Core.dll" target="lib\Xamarin.iOS\Itinero.Core.dll" />
     <file src="..\artifacts\Release\bin\Itinero.iOS.dll" target="lib\Xamarin.iOS\Itinero.iOS.dll" />
