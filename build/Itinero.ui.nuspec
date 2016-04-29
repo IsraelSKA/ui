@@ -9,6 +9,7 @@
     <copyright>Ben Abelshausen</copyright>
     <licenseUrl>https://github.com/itinero/ui/blob/master/LICENSE</licenseUrl>
     <projectUrl>https://github.com/itinero/ui</projectUrl>
+    <iconUrl>http://osmsharp.com/sites/default/files/osmsharp_logo64.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>
       Itinero.ui is a map component optimized for routing on mobile applications
