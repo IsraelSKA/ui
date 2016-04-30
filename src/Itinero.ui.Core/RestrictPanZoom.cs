@@ -6,9 +6,24 @@ using Mapsui.Geometries;
 
 namespace Itinero.ui.Core
 {
-    public class PairOfDoubles : Tuple<double, double>
+    public class MinMax
     {
-        public PairOfDoubles(double item1, double item2) : base(item1, item2) { }
+        public MinMax(double value1, double value2)
+        {
+            if (value1 < value2)
+            {
+                Min = value1;
+                Max = value2;
+            }
+            else
+            {
+                Min = value2;
+                Max = value1;
+            }
+        }
+
+        public double Min { get; }
+        public double Max { get; }
     }
 
     public enum RestrictPanMode
@@ -47,15 +62,15 @@ namespace Itinero.ui.Core
         /// Pair of the extreme resolution (biggest and smalles). The resolution is kept between these.
         /// The order of the two extreme resolutions does not matter.
         /// </summary>
-        public PairOfDoubles ResolutionExtremes { get; set; }
+        public MinMax ResolutionExtremes { get; set; }
 
-        private static PairOfDoubles GetExtremes(IList<double> resolutions)
+        private static MinMax GetExtremes(IList<double> resolutions)
         {
             if (resolutions == null || resolutions.Count == 0) return null;
             resolutions = resolutions.OrderByDescending(r => r).ToList();
             var mostZoomedOut = resolutions[0];
             var mostZoomedIn = resolutions[resolutions.Count - 1]/2; // divide by two to allow one extra level zoom-in
-            return new PairOfDoubles(mostZoomedOut, mostZoomedIn);
+            return new MinMax(mostZoomedOut, mostZoomedIn);
         }
 
         public double RestrictZoom(IViewport viewport, IList<double> resolutions, BoundingBox mapEnvelope)
@@ -67,25 +82,18 @@ namespace Itinero.ui.Core
 
             if (ZoomMode == RestrictZoomMode.KeepWithinResolutions)
             {
-                var smallest = Math.Min(resolutionExtremes.Item1, resolutionExtremes.Item2);
-                if (smallest > viewport.Resolution) return smallest;
-
-                var biggest = Math.Max(resolutionExtremes.Item1, resolutionExtremes.Item2);
-                if (biggest < viewport.Resolution) return biggest;
+                if (resolutionExtremes.Min > viewport.Resolution) return resolutionExtremes.Min;
+                if (resolutionExtremes.Max < viewport.Resolution) return resolutionExtremes.Max;
             }
             else if (ZoomMode == RestrictZoomMode.KeepWithinResolutionsAndAlwaysFillViewport)
             {
-                var smallest = Math.Min(resolutionExtremes.Item1, resolutionExtremes.Item2);
-                if (smallest > viewport.Resolution) return smallest;
-
-                var biggest = Math.Max(resolutionExtremes.Item1, resolutionExtremes.Item2);
-
+                if (resolutionExtremes.Min > viewport.Resolution) return resolutionExtremes.Min;
+                
                 // This is the ...AndAlwaysFillViewport part
                 var viewportFillingResolution = CalculateResolutionAtWhichMapFillsViewport(viewport, mapEnvelope);
-                if (viewportFillingResolution < smallest) return viewport.Resolution; // Mission impossible. Can't adhere to both restrictions
-                biggest = Math.Min(biggest, viewportFillingResolution);
-
-                if (biggest < viewport.Resolution) return biggest;
+                if (viewportFillingResolution < resolutionExtremes.Min) return viewport.Resolution; // Mission impossible. Can't adhere to both restrictions
+                var limit = Math.Min(resolutionExtremes.Max, viewportFillingResolution);
+                if (limit < viewport.Resolution) return limit;
             }
             return viewport.Resolution;
         }
